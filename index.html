@@ -1,0 +1,2506 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>16-10 </title>
+    <style>
+        :root {
+            --c1: #f8f8f8;
+            /* bordeaux */
+            --c2: #19191a;
+            /* bleu très pâle */
+            --c3: #1f1f1e;
+            /* mintcream */
+            --c4: #a45154;
+            /* prune */
+            --c5: #5a1d1f;
+            /* prune sombre */
+            --c6: #685e67;
+            /* indigo */
+            --c7: #030808;
+            /* presque noir */
+            --gold: #f2e1ae;
+            /* étoiles */
+            --rose: #6d6d6d;
+            /* rose doux */
+            --peach: #272727;
+            /* pêche */
+            --shadow: 0 10px 30px rgba(0, 0, 0, .3);
+            --blur: blur(8px);
+            --radius: 20px;
+            --trans: all .35s ease;
+        }
+
+        @font-face {
+            font-family: "ClarityCity-Alt";
+            src: local("Inter"), local("system-ui");
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: ui-rounded, system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
+            color: #111;
+            background: linear-gradient(135deg, var(--c1), var(--c2), var(--c3));
+            background-size: 300% 300%;
+            animation: bgshift 20s ease infinite;
+            overflow-x: hidden;
+        }
+
+        @keyframes bgshift {
+            0% {
+                background-position: 0% 50%
+            }
+
+            50% {
+                background-position: 100% 50%
+            }
+
+            100% {
+                background-position: 0% 50%
+            }
+        }
+
+        /* Global section layout */
+        section {
+            min-height: 100dvh;
+            padding: clamp(16px, 4vw, 48px);
+            display: none;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity .6s ease, transform .6s ease;
+        }
+
+        section.active {
+            display: block;
+            opacity: 1;
+            transform: none;
+        }
+
+        .title {
+            font-size: clamp(28px, 5vw, 56px);
+            letter-spacing: .5px;
+            font-weight: 800;
+            color: #111;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, .15);
+        }
+
+        .subtitle {
+            opacity: .8;
+            margin-top: 8px
+        }
+
+        .card {
+            background: rgba(255, 255, 255, .55);
+            backdrop-filter: blur(8px);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 20px;
+        }
+
+        /* Buttons (bubble-style) */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 22px;
+            border-radius: 999px;
+            border: 0;
+            cursor: pointer;
+            font-weight: 700;
+            letter-spacing: .3px;
+            background: radial-gradient(120% 120% at 20% 20%, rgba(255, 255, 255, .9), rgba(255, 255, 255, .65));
+            box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .35), 0 10px 20px rgba(0, 0, 0, .15);
+            transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .5), 0 14px 26px rgba(0, 0, 0, .2);
+            filter: brightness(1.06);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .grid {
+            display: grid;
+            gap: clamp(12px, 2vw, 22px);
+        }
+
+        /* Welcome (Gate) */
+        #welcome {
+            background: linear-gradient(135deg, var(--c1), var(--c2), var(--c3));
+            background-size: 200% 200%;
+            animation: bgshift 24s ease infinite;
+            color: #111;
+        }
+
+        #welcome .hero {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.2fr .8fr;
+            gap: 24px;
+            align-items: center;
+        }
+
+        #welcome .holder {
+            position: relative;
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        #welcome .holder img {
+            width: 100%;
+            height: 60vh;
+            object-fit: cover;
+            display: block;
+            filter: none;
+            transition: filter .4s ease, transform .6s ease;
+        }
+
+        #welcome .holder:hover img {
+            filter: var(--blur) saturate(1.2);
+            transform: scale(1.03);
+        }
+
+        .dots {
+            display: inline-flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .dots span {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #0002;
+            animation: pulse 1.1s infinite ease-in-out;
+        }
+
+        .dots span:nth-child(2) {
+            animation-delay: .10s
+        }
+
+        .dots span:nth-child(3) {
+            animation-delay: .3s
+        }
+
+        @keyframes pulse {
+
+            0%,
+            80%,
+            100% {
+                opacity: .3;
+                transform: scale(.9)
+            }
+
+            40% {
+                opacity: 1;
+                transform: scale(1.2)
+            }
+        }
+
+        /* Menu */
+        #menu {
+            background-image: url('https://i.pinimg.com/736x/8a/4f/43/8a4f43316700aa1a9d5e41ae396ae791.jpg');
+            background-size: cover;
+            color: #111;
+        }
+
+        .menu-wrap {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 18px;
+            margin-top: 24px;
+        }
+
+        .menu-item {
+            padding: 20px;
+            border-radius: 999px;
+            text-align: center;
+            font-size: 18px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-item::after {
+            content: "";
+            position: absolute;
+            inset: -30%;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, .7), rgba(255, 255, 255, 0));
+            filter: blur(20px);
+            transition: opacity .25s;
+            opacity: 0;
+        }
+
+        .menu-item:hover::after {
+            opacity: 1;
+        }
+
+        /* Stars (Things I love) */
+        #love {
+            position: relative;
+            background: center/cover no-repeat;
+            color: #111;
+        }
+
+        #love .sky {
+            position: relative;
+            height: 70vh;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            background: rgba(255, 255, 255, .4);
+            backdrop-filter: blur(6px);
+        }
+
+        /* Normal stars */
+        .star {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: var(--gold);
+            border-radius: 50%;
+            box-shadow: 0 0 12px 4px rgba(204, 218, 21, 0.35);
+            cursor: pointer;
+            transition: transform .15s, box-shadow .3s, background .3s;
+        }
+
+        .star:hover {
+            transform: scale(1.3);
+        }
+
+        /* Clicked stars glow more brightly */
+        .star-glow {
+            background: gold;
+            box-shadow: 0 0 20px 6px gold, 0 0 35px 12px orange;
+        }
+
+        /* Reason box */
+        .reason {
+            margin-top: 16px;
+            min-height: 80px;
+            font-size: 18px;
+            background: rgba(255, 255, 255, .55);
+            padding: 16px;
+            border-radius: 12px;
+        }
+
+
+        /* Quiz */
+        #quiz {
+            
+        background: url("https://i.pinimg.com/1200x/0f/ba/ab/0fbaabbe8c29518b3f12ad24db17825e.jpg") center/cover no-repeat;
+    
+
+        }
+
+        .q-card {
+            background: rgba(255, 255, 255, .65);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .quiz-options {
+            display: grid;
+            gap: 10px;
+            margin: 8px 0 12px
+        }
+
+        .quiz-opt {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 14px;
+            border: 1px solid rgba(255, 255, 255, .08);
+            border-radius: 14px;
+            background: rgba(255, 255, 255, .02);
+            cursor: pointer;
+            user-select: none;
+            transition: transform .05s ease, border-color .15s ease, background .15s ease;
+        }
+
+        .quiz-opt:hover {
+            transform: translateY(-1px);
+            border-color: rgba(255, 255, 255, .16);
+            background: rgba(255, 255, 255, .04)
+        }
+
+        .quiz-opt input {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer
+        }
+
+        .quiz-opt .dot {
+            width: 18px;
+            height: 18px;
+            border-radius: 999px;
+            border: 2px solid rgba(255, 255, 255, .5);
+            display: inline-block;
+            position: relative;
+            flex: 0 0 auto;
+        }
+
+        .quiz-opt[data-checked="true"] .dot {
+            border-color: rgb(190, 133, 154)
+        }
+
+        .quiz-opt[data-checked="true"] .dot::after {
+            content: "";
+            position: absolute;
+            inset: 3px;
+            border-radius: 999px;
+            background: #af647f;
+            box-shadow: 0 0 0 6px rgba(80, 37, 53, 0.35);
+        }
+
+        .quiz-foot {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 18px 20px;
+            border-top: 1px solid rgba(255, 255, 255, .06)
+        }
+
+        .quiz-btn {
+            appearance: none;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            background: linear-gradient(90deg, #ff4d8d, #7c3aed);
+            padding: 12px 16px;
+            font-weight: 700;
+            color: white;
+            border-radius: 14px;
+            box-shadow: 0 8px 18px rgba(124, 58, 237, .25);
+        }
+
+        .quiz-btn.secondary {
+            background: transparent;
+            color: #e9e9ef;
+            border: 1px solid rgba(255, 255, 255, .14);
+            box-shadow: none;
+            font-weight: 600;
+        }
+
+        .quiz-btn[disabled] {
+            opacity: .55;
+            cursor: not-allowed
+        }
+
+        .quiz-muted {
+            color: #a5a7b2
+        }
+
+
+        /* Things to do */
+        #todo {
+            
+    background: url("https://i.pinimg.com/736x/4e/1b/e7/4e1be730a6b41acf1c8f7f92b539f99c.jpg") center/cover no-repeat;
+
+        }
+
+        .panel-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+        }
+
+        .panel {
+            position: relative;
+            overflow: hidden;
+            border-radius: 18px;
+            box-shadow: var(--shadow);
+            height: 260px;
+            background: #000;
+        }
+
+        .panel img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(.9);
+            transition: var(--trans);
+        }
+
+        .panel:hover img {
+            filter: brightness(.6) blur(2px)
+        }
+
+        .panel .overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 16px;
+            color: #fff;
+            opacity: 0;
+            transition: var(--trans);
+            background: linear-gradient(0deg, rgba(0, 0, 0, .6), transparent 50%);
+        }
+
+        .panel:hover .overlay {
+            opacity: 1
+        }
+
+        /* Love pharmacy */
+        #pharma {
+            
+     background: url("https://i.pinimg.com/736x/62/6c/1b/626c1bbe2c7f621b1fb2afd03925d1e0.jpg") center/cover no-repeat;
+        }
+
+        .shelf {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-top: 14px
+        }
+
+        .pill {
+            position: relative;
+            padding: 10px 16px;
+            border-radius: 999px;
+            background: linear-gradient(135deg, #fff, #f6f6f6);
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            border: 2px solid #fff8;
+        }
+
+        .dispenser {
+            margin-top: 16px;
+            min-height: 60px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap
+        }
+
+        .dose {
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: radial-gradient(circle at 30% 30%, var(--rose), #fff);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, .15)
+        }
+
+        /* Polaroid wall */
+        #polaroid {
+            background: url("https://i.pinimg.com/1200x/d7/97/1b/d7971b546be5331d2f424e9b173e9a23.jpg") center/cover no-repeat;
+            color: #fff;
+        }
+
+        .wall {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 18px;
+        }
+
+        .polaroid {
+            background: #fff;
+            color: #111;
+            padding: 10px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            transform: rotate(calc(var(--r, -4) * 1deg));
+            cursor: pointer;
+            position: relative;
+        }
+
+        .polaroid img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 8px;
+            transition: filter .35s ease;
+        }
+
+        .polaroid:hover img {
+            filter: blur(2px) brightness(.8)
+        }
+
+        .caption {
+            font-size: 14px;
+            opacity: .8;
+            margin-top: 6px;
+            text-align: center
+        }
+
+        .modal {
+            position: fixed;
+            inset: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, .5);
+            backdrop-filter: blur(4px);
+        }
+
+        .modal.active {
+            display: flex
+        }
+
+        .modal .modal-card {
+            width: min(800px, 92vw);
+            height: min(80vh, 620px);
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: var(--shadow);
+        }
+
+        .modal .bg {
+            position: absolute;
+            inset: 0;
+            background-position: center;
+            background-size: cover;
+            filter: blur(6px) brightness(.6);
+        }
+
+        .modal .content {
+            position: relative;
+            z-index: 1;
+            color: #fff;
+            padding: 22px;
+            height: 100%;
+            overflow: auto
+        }
+
+        /* Starry planner */
+        #planner {
+            background: url("https://i.pinimg.com/736x/02/0c/11/020c11c94cd06daded2214c4f8721302.jpg") center/cover no-repeat;
+            color: #fff;
+        }
+
+        .stars {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+        }
+
+        .starcard {
+            background: rgba(255, 255, 255, .12);
+            border: 1px solid rgba(255, 255, 255, .25);
+            padding: 18px;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            transition: var(--trans);
+        }
+
+        .starcard:hover {
+            transform: translateY(-3px);
+            background: rgba(255, 255, 255, .18);
+        }
+
+        .starcard.active {
+            outline: 2px solid #fff;
+        }
+
+        /* Chat log story */
+        #chat {
+            background: url("https://i.pinimg.com/736x/a3/53/6f/a3536fcc6a714827000c570f8d3c93a8.jpg") center/cover no-repeat;
+        }
+
+        .chatbox {
+            max-width: 920px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, .6);
+            border-radius: 18px;
+            padding: 16px;
+            box-shadow: var(--shadow);
+        }
+
+        .msg {
+            display: flex;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        .msg .bubble {
+            max-width: 66%;
+            padding: 12px 14px;
+            border-radius: 16px;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, .1);
+            background: #fff
+        }
+
+        .me {
+            justify-content: flex-end
+        }
+
+        .me .bubble {
+            background: #e8f6ff
+        }
+
+        .meta {
+            font-size: 12px;
+            opacity: .6;
+            margin-top: 3px
+        }
+
+        .gif {
+            width: 160px;
+            border-radius: 10px
+        }
+
+        /* End — heart letter */
+        #end {
+            background: linear-gradient(135deg, var(--c1), var(--c7));
+            color: #fff;
+            text-align: center;
+        }
+
+        .heart {
+            width: 220px;
+            height: 220px;
+            margin: 16px auto;
+            position: relative;
+            transform: rotate(-45deg);
+        }
+
+        .heart::before,
+        .heart::after {
+            content: "";
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            background: radial-gradient(circle at 30% 30%, #ff9ab3, #ff376a);
+            border-radius: 50%;
+            box-shadow: var(--shadow)
+        }
+
+        .heart::before {
+            left: 110px
+        }
+
+        .heart::after {
+            top: 110px
+        }
+
+        .heart {
+            background: radial-gradient(circle at 30% 30%, #ff9ab3, #ff376a);
+        }
+
+        .letter {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 18px;
+            background: none;
+            border: none;
+            box-shadow: none;
+            border-radius: 0;
+            white-space: pre-wrap;
+            font: 700 1.5rem/1.4 system-ui, sans-serif;
+            color: #111;
+
+            /* Start hidden */
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            /* slight slide effect */
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        /* When visible */
+        .letter.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        /* Easter eggs */
+        #eggs {
+            background: url("https://i.pinimg.com/1200x/0a/03/a2/0a03a2a456cfc29bef7a06c8a0bb7655.jpg") center/cover no-repeat;
+            color: #111;
+        }
+
+        .eggbox {
+            max-width: 1000px;
+            margin: 0 auto
+        }
+
+        .egg-input {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px
+        }
+
+        .egg-input input {
+            flex: 1;
+            padding: 12px 14px;
+            border-radius: 12px;
+            border: 2px solid #0002;
+            background: #fff;
+        }
+
+        /* Footer banner */
+        .love-banner {
+            text-align: center;
+            padding: 28px 12px;
+            font-size: clamp(28px, 7vw, 72px);
+            font-weight: 900;
+            letter-spacing: 2px;
+            background: linear-gradient(90deg, #74666a, #080808, #1b1b1b00);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        /* Helper */
+        .row {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap
+        }
+
+        .hidden {
+            display: none !important
+        }
+
+        .mt {
+            margin-top: 16px
+        }
+
+        .error {
+            color: #b00020;
+            font-size: 12px;
+            margin-top: 8px;
+            display: none
+        }
+
+        .bad {
+            border-color: #b00020 !important;
+        }
+
+        /* simple nav buttons */
+        .nav-buttons {
+            position: fixed;
+            right: 16px;
+            bottom: 16px;
+            display: none;
+            gap: 8px;
+        }
+
+        .nav-buttons button {
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            background: #fff8
+        }
+    
+/* ===== Hide scrollbar only in Fin (love letter) section ===== */
+#end::-webkit-scrollbar { display: none !important; }
+#end { scrollbar-width: none !important; -ms-overflow-style: none !important; overflow: hidden !important; }
+
+</style>
+
+
+    <!-- OVERRIDE: ensure uploaded heart is visible and full-screen in #end -->
+    <style>
+        #end {
+            padding: 0;
+            margin: 0;
+        }
+
+        #end .uploaded-root,
+        #end body {
+            width: 100%;
+            height: 100vh;
+        }
+
+        #end {
+            background: #000 !important;
+        }
+
+        #end canvas {
+            z-index: 2 !important;
+            position: relative !important;
+            width: 100% !important;
+            height: 100% !important;
+            display: block !important;
+        }
+
+        #end #message {
+            z-index: 3 !important;
+            position: relative !important;
+            color: #fff !important;
+        }
+
+        /* ensure only one back button: style any existing */
+        #end #endBackBtn {
+            position: fixed;
+            right: 18px;
+            top: 18px;
+            z-index: 99999;
+            background: #fff;
+            color: #000;
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 700;
+        }
+    </style>
+
+    <style>
+        /* Persistent heart message and global menu button */
+        #end.revealed #message,
+        #end.revealed .message,
+        #end .message.persist {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+            pointer-events: auto !important;
+        }
+
+        .global-menu-btn {
+            position: fixed;
+            left: 16px;
+            top: 16px;
+            z-index: 999999;
+            background: linear-gradient(90deg, #ff6b6b, #7c3aed);
+            color: white;
+            border: none;
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-weight: 800;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, .25);
+            cursor: pointer;
+        }
+
+        .global-menu-btn:active {
+            transform: translateY(1px);
+        }
+    </style>
+    <style>
+        /* ==== User-requested overrides ==== */
+        /* Ensure the heart message is hidden by default */
+        #end #message,
+        #end .message {
+            opacity: 0 !important;
+            visibility: hidden !important;
+            transform: translateY(10px) !important;
+            pointer-events: none !important;
+        }
+
+        /* When the end section is revealed show message persistently */
+        #end.revealed #message,
+        #end.revealed .message,
+        #end.active.revealed #message {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: translateY(0) !important;
+            pointer-events: auto !important;
+        }
+
+        /* Hide any bottom nav-buttons while the end overlay is active */
+        #end.active .nav-buttons,
+        #end.active .nav-buttons * {
+            display: none !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+        }
+
+        /* Hide the global menu button when the welcome screen is active */
+        .global-menu-btn.hide-on-welcome {
+            display: none !important;
+        }
+    </style>
+    <style>
+        /* Center the persistent heart message and allow long content */
+        #end .message,
+        #end #message {
+            position: absolute !important;
+            top: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
+            max-width: 90vw !important;
+            width: min(1100px, 90vw) !important;
+            max-height: 80vh !important;
+            overflow: auto !important;
+            padding: 22px !important;
+            box-sizing: border-box !important;
+            background: rgba(0, 0, 0, 0.35) !important;
+            color: #fff !important;
+            font-size: 18px !important;
+            line-height: 1.4 !important;
+            border-radius: 12px !important;
+            white-space: pre-wrap !important;
+            text-align: left !important;
+            z-index: 99999 !important;
+        }
+
+        /* Keep message hidden until revealed (reinforce) */
+        #end .message,
+        #end #message {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity .28s ease, transform .28s ease;
+            pointer-events: none;
+        }
+
+        #end.revealed .message,
+        #end.revealed #message {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) !important;
+            pointer-events: auto;
+        }
+
+        /* Hide any bottom nav-buttons while the end overlay is active (extra safety) */
+        #end.active .nav-buttons,
+        #end.active .nav-buttons * {
+            display: none !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+        }
+    </style>
+    <style>
+        /* CENTERED BOX — text starts at top for long content */
+        #end .message,
+        #end #message {
+            position: fixed !important;
+            top: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
+            max-width: 90vw !important;
+            width: min(1100px, 90vw) !important;
+            max-height: 80vh !important;
+            overflow: auto !important;
+            padding: 18px 22px !important;
+            box-sizing: border-box !important;
+            background: rgba(0, 0, 0, 0.45) !important;
+            color: #fff !important;
+            font-size: 18px !important;
+            line-height: 1.5 !important;
+            border-radius: 12px !important;
+            white-space: pre-wrap !important;
+            text-align: left !important;
+            z-index: 100000 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: flex-start !important;
+            /* keep text at the top of the box */
+            align-items: stretch !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
+            transition: opacity .28s ease, transform .28s ease !important;
+            pointer-events: none !important;
+        }
+
+        /* Show when revealed */
+        #end.revealed .message,
+        #end.revealed #message,
+        #end.active.revealed .message {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: translate(-50%, -50%) !important;
+            pointer-events: auto !important;
+        }
+
+
+        /* Remove any stray bottom strips / nav on end */
+        #end .nav-buttons,
+        #end .nav-buttons * {
+            display: none !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+        }
+
+        .global-menu-btn {
+            display: none !important;
+            visibility: hidden !important;
+        }
+    </style>
+    <style>
+        /* Persistent top-left Menu button */
+        .global-menu-btn {
+            position: fixed;
+            left: 16px;
+            top: 16px;
+            z-index: 1000000;
+            background: linear-gradient(90deg, #532c2c, #272231);
+            color: white;
+            border: none;
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-weight: 800;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, .25);
+            cursor: pointer;
+        }
+
+        /* Hide on the welcome screen */
+        #welcome.active~.global-menu-btn,
+        #welcome.active+.global-menu-btn,
+        .global-menu-btn.hide-on-welcome {
+            display: none !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+        }
+    </style>
+    <style>
+        /* ===== New bottom-centered icon menu button ===== */
+        .global-menu-icon {
+            position: fixed;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 20px;
+            z-index: 1000001;
+            width: 56px;
+            height: 56px;
+            border-radius: 999px;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #ff6b6b, #7c3aed);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28);
+            cursor: pointer;
+            transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease;
+        }
+
+        .global-menu-icon:active {
+            transform: translateX(-50%) translateY(1px) scale(.98);
+        }
+
+        .global-menu-icon svg {
+            width: 22px;
+            height: 22px;
+            display: block;
+            fill: white;
+        }
+
+        /* hide on welcome */
+        #welcome.active~.global-menu-icon,
+        .global-menu-icon.hide-on-welcome {
+            display: none !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+        }
+
+        /* ===== Force perfect centering of message and top-aligned content inside ===== */
+        #end .message,
+        #end #message {
+            position: fixed !important;
+            top: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
+            width: min(1100px, 90vw) !important;
+            max-height: 80vh !important;
+            overflow: auto !important;
+            padding: 20px !important;
+            box-sizing: border-box !important;
+            background: rgba(0, 0, 0, 0.55) !important;
+            color: #fff !important;
+            font-size: 18px !important;
+            line-height: 1.45 !important;
+            border-radius: 12px !important;
+            white-space: pre-wrap !important;
+            text-align: left !important;
+            z-index: 1000002 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: flex-start !important;
+            /* top align content */
+            align-items: stretch !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+            transition: opacity .28s ease, transform .28s ease !important;
+        }
+
+        /* Show when revealed */
+        #end.revealed .message,
+        #end.revealed #message,
+        #end.active.revealed .message {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: translate(-50%, -50%) !important;
+            pointer-events: auto !important;
+        }
+
+        /* Hide any bottom nav-buttons while end overlay is active */
+        #end.active .nav-buttons,
+        #end.active .nav-buttons * {
+            display: none !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ================= 01. Écran d'accueil / Gate ================= -->
+    <section id="welcome" class="active">
+        <div class="hero">
+            <div>
+                <div class="title">MEOOOOW </div>
+                <div class="subtitle">Bienvenue dans ton petit univers trop mims que j'ai bricolé pour toi :p J'espère
+                    que tu vas kiffer chaque pixel autant
+                    que moi j’ai kiffé le créer. Avec love, Sabi 💕</div>
+                <div class="card mt">
+                    <label for="key">Mets quatre chiffres pour déverrouiller.</label>
+                    <div class="row mt">
+                        <input id="key" inputmode="numeric" pattern="[0-9]*" placeholder="••••" maxlength="4"
+                            style="padding:12px 14px; border-radius:12px; border:2px solid #0002; background:#fff; width:130px; font-size:20px; text-align:center; letter-spacing:4px" />
+                        <button id="enterBtn" type="button" class="btn">Entrer</button>
+                        <div class="dots" id="loading" aria-hidden="true" style="display:none">
+                            <span></span><span></span><span></span>
+                        </div>
+                    </div>
+                    <small class="mt" style="display:block; opacity:.7"></small>
+                    <div id="keyError" class="error">Noope essaye le meilleur jour de notre life.</div>
+                </div>
+                <p class="mt" style="opacity:.7"></p>
+            </div>
+
+            <div class="holder">
+                <!-- PLACEHOLDER IMAGE: Remplace src ci‑dessous par ta grande photo -->
+                <img id="welcomePhoto" src="https://i.pinimg.com/736x/7a/2f/ba/7a2fba4d290551136ac342a2c75654ff.jpg"
+                    alt="Grande photo — floute au survol" />
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= 02. Menu ================= -->
+    <section id="menu">
+        <div class="menu-wrap">
+            <div class="title">🌙 ton univers</div>
+            <h2 class="subtitle">WIIUUWIIIIUUUUUU , Bienvenue ici… un petit espace pensé pour te faire sentir à la maison, où chaque mot, chaque image, chaque coin est
+            rempli de douceur et de tendresse. Laisse-toi guider, laisse ton cœur respirer, et découvre un endroit où tout parle
+            d’amour, de souvenirs et de petits instants précieux. 💖
+                ,hmlaghk me3ouch </h2>
+            <div class="menu-grid mt">
+                
+                <button class="btn menu-item" data-target="love">01.trucs que j'aime chez toi</button>
+                <button class="btn menu-item" data-target="quiz">02.Love Quiz</button>
+                <button class="btn menu-item" data-target="todo">03.Choses à faire ensemble</button>
+            
+                <button class="btn menu-item" data-target="polaroid">04.Mur Polaroid</button>
+                <button class="btn menu-item" data-target="planner">05.Planificateur étoilé</button>
+                <button class="btn menu-item" data-target="end">06.Fin </button>
+                <button class="btn menu-item" data-target="eggs">07.Pour toi</button>
+                 <button class="btn menu-item" data-target="valentine">#1 Valentine</button>
+                <button class="btn menu-item" data-target="welcome">Accueil</button>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ================= #1 Valentine — Love Letter ================= -->
+    <section id="valentine" class="card"
+      style="background-image:url(https://i.pinimg.com/736x/2a/47/05/2a4705a4707af5a80e9df92e9b291bdb.jpg )">
+            /* PLACEHOLDER — replace with your image */
+            /* url('YOUR_IMAGE_HERE.jpg') center/cover no-repeat, */
+            linear-gradient(135deg, rgba(255,255,255,0.85), rgba(255,255,255,0.65));
+        ">
+        <div style="max-width:900px; margin:0 auto;">
+            <h1 class="title">My Valentine 🤍</h1>
+            <p class="subtitle">Un mot que je voulais te laisser, ici, pour toujours mon coeur</p>
+
+            <div class="card mt" style="white-space:pre-wrap; font-size:18px; line-height:1.6;">
+Mon bonheur c'est toi ,
+    
+Honnêtement je ne sais même pas comment je faisais avant toi,,tu es devenu mon réflexe, mon apaisement, ma source de bonheur, quand t'es là, je vais bien, quand je te parle, tout s’aligne, et quand tu me manques, je sens à quel point j’ai besoin de toi mon amour,
+
+J’aime dépendre de toi, J’aime savoir que t 'es là pour me faire sourire, me rassurer, me faire sentir aimée. T' es mon confort, mon point faible préféré, celui sans qui mes journées n’ont pas la même saveur. Tu comptes sur moi, et moi… je compte énormément sur toi.
+
+Tu es précieux pour moi, plus que tu ne l’imagines tu es important dans chaque détail de ma vie, dans mes pensées, dans mon cœur. rien ne me fait plus plaisir que de savoir que tu es à mes côtés, que je peux m’appuyer sur toi, t’aimer librement, et être moi avec toi.
+
+Je suis tellement reconnaissante de t’avoir. Vraiment. Tu es mon choix, mon évidence, mon bonheur. Et aujourd’hui, j’avais juste envie de te le dire clairement.
+
+Je t’aime infiniment, mon cœur.
+Joyeuse Saint-Valentin 💗
+
+my favorite human.
+
+— Yours 🤍
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ================= 03. Choses que j'aime chez toi (120 étoiles) ================= -->
+    <section id="love"
+        style="background-image:url(https://i.pinimg.com/736x/47/98/ca/4798cafda2a87272f04f4680ac67a6da.jpg )">
+
+
+        <div class="title">
+            <h5> 120 raisons pour lesquelles je t’aime (évidemment y’en a bien plus, mais tu sais un peu pourquoi c’est
+                exactement 120✨</h5>
+        </div>
+        <p class="subtitle">
+        <h3>Clique sur une étoile pour découvrir l’une des 120 raisons…</h3>
+        </p>
+        <div class="sky mt" id="sky"></div>
+        <div class="reason" id="reasonBox">(Clique une étoile pour afficher une raison.)</div>
+    </section>
+
+    <!-- ================= 04. Love Quiz (20 questions) ================= -->
+    <section id="quiz">
+        <div id="love-quiz">
+            <div class="quiz-card" role="application">
+                <div class="quiz-head">
+                    <div class="quiz-logo" aria-hidden="true">♥</div>
+                    <div style="flex:1">
+                        <h1>Love Quiz —19 questions pour ton 19ᵉ anniversaire, mon amour</h1>
+                        <div class="quiz-sub">Choisis une réponse pour chaque question. Une seule est correcte..</div>
+                        <div class="quiz-progress" aria-hidden="true">
+                            <div class="quiz-bar" id="bar"></div>
+                        </div>
+                    </div>
+                    <button class="quiz-btn secondary" id="resetBtn" title="Start over">réinitialiser</button>
+                </div>
+
+                <div class="quiz-body" id="stage" aria-live="polite"></div>
+
+                <div class="quiz-foot">
+                    <button class="quiz-btn secondary" id="prevBtn" disabled>← Prev</button>
+                    <div class="quiz-muted" id="pos"></div>
+                    <button class="quiz-btn" id="nextBtn" disabled>Next →</button>
+                </div>
+            </div>
+        </div>
+
+
+    </section>
+
+    <!-- ================= 05. Choses à faire ensemble (>=15 tuiles) ================= -->
+    <section id="todo">
+        <div class="title">Choses à faire ensemble</div>
+        <p class="subtitle">Passe la souris pour voir le nom + la description</p>
+        <div class="panel-grid mt" id="todoGrid">
+            <div class="panel">
+                <img src="https://i.pinimg.com/736x/b7/21/f7/b721f78907cb51d7384d871879ee8035.jpg" alt="" />
+                <div class="overlay">
+                    <div style="font-weight:800">1. 🌙 Promenade nocturne ensemble</div>
+                    <div style="opacity:.85">main dans la main, sous la lune, juste nous et le silence.</div>
+                </div>
+            </div>
+            <div class="panel">
+                <img src="https://i.pinimg.com/1200x/e9/61/79/e961795584b6509da7a1daab73e0dcb5.jpg" alt="" />
+                <div class="overlay">
+                    <div style="font-weight:800">🍳 Cuisiner à deux</div>
+                    <div style="opacity:.85">rire, goûter, se taquiner pendant qu’on prépare notre petit festin d’amour.</div>
+                </div>
+            </div>
+            <div class="panel">
+                <img src="https://i.pinimg.com/736x/4a/88/c1/4a88c1eab7bdee87bab988b9a557ab80.jpg" alt="" />
+                <div class="overlay">
+                    <div style="font-weight:800">💤 Dormir côte à côte</div>
+                    <div style="opacity:.85">pas besoin de mots, juste ton souffle près du mien.</div>
+                </div>
+            </div>
+            <div class="panel"><img src="https://i.pinimg.com/736x/46/7a/c9/467ac9d7a3061d791bdbd186c1c4d745.jpg" alt="">
+                <div class="overlay">
+                    <div style="font-weight:800">🧺 Pique-nique amoureux</div>
+                    <div style="opacity:.85">soleil doux, plaid fleuri, et ton sourire plus beau que tout.</div>
+                </div>
+            </div>
+            <div class="panel"><img src="https://i.pinimg.com/736x/08/66/b1/0866b1d3b040a33a9659cf57bbd19ebb.jpg" alt="">
+                <div class="overlay">
+                    <div style="font-weight:800">🎬 Reproduire nos tendances Insta</div>
+                    <div style="opacity:.85">fous rires garantis, souvenirs immortalisés à chaque essai raté.</div>
+                </div>
+            </div>
+            <div class="panel"><img src="https://i.pinimg.com/736x/40/89/43/408943024002e30e50e84e37092a633b.jpg" alt="">
+                <div class="overlay">
+                    <div style="font-weight:800">📸 Créer notre album souvenir</div>
+                    <div style="opacity:.85">chaque photo, une histoire… chaque regard, une éternité.</div>
+                </div>
+            </div>
+            <div class="panel"><img src="https://i.pinimg.com/736x/c4/7c/1d/c47c1d3629aa9980070c1b53586c8e30.jpg" alt="">
+                <div class="overlay">
+                    <div style="font-weight:800">🎮 Jouer ensemble</div>
+                    <div style="opacity:.85">compétition douce, câlins de victoire, et rires sans fin.</div>
+                </div>
+            </div>
+            <div class="panel"><img src="https://i.pinimg.com/736x/34/b4/70/34b4702b00a46b306843eb6efdb7e041.jpg" alt="">
+                <div class="overlay">
+                    <div style="font-weight:800">💸 Devenir riches ensemble</div>
+                    <div style="opacity:.85">pas que d’argent, mais d’amour, de rêves et de paix.</div>
+                </div>
+            </div>
+            <div class="panel"><img src="https://i.pinimg.com/736x/88/06/23/880623059a7ed230bae4fa822dd00b00.jpg" alt="">
+                <div class="overlay">
+                    <div style="font-weight:800">💍 Se marier</div>
+                    <div style="opacity:.85">le “pour toujours” qu’on murmurait devient enfin notre réalité.</div>
+                </div>
+            </div>
+            <div class="panel"><img src="https://i.pinimg.com/1200x/e4/e2/c0/e4e2c06ec74383234f01f86b84b46d9b.jpg" alt="">
+                <div class="overlay">
+                    <div style="font-weight:800">🎭 Revivre nos scénarios imaginés</div>
+                    <div style="opacity:.85">nos rêves prennent vie, scène après scène, cœur après cœur.</div>
+                </div>
+            </div>
+            <div class="panel"><img src="https://i.pinimg.com/736x/e1/de/4f/e1de4f6629d036227f7d404e84346ed5.jpg" alt="">
+                <div class="overlay">
+                    <div style="font-weight:800">✈️ Voyager à deux</div>
+                    <div style="opacity:.85">explorer le monde, main dans la main, comme dans nos rêves.</div>
+                </div>
+            </div>
+            <div class="panel"><img src="https://i.pinimg.com/736x/d5/e2/f3/d5e2f3eaf42c22440ebd73a44ace4c6a.jpg" alt="">
+                <div class="overlay">
+                    <div style="font-weight:800">🚗 Acheter nos voitures de rêve</div>
+                    <div style="opacity:.85">rouler sans destination, juste la liberté et ton rire.</div>
+                </div>
+            </div>
+            <div class="panel"><img src="https://i.pinimg.com/736x/04/4b/bc/044bbc4aad48e73bf7a5680468e995cb.jpg" alt="">
+                <div class="overlay">
+                    <div style="font-weight:800">🏡 Profiter de notre vie de couple marié</div>
+                    <div style="opacity:.85">matins tranquilles, café partagé, et amour qui ne vieillit pas.</div>
+                </div>
+            </div>
+            <div class="panel"><img src="https://i.pinimg.com/736x/ff/95/69/ff95692cba264a7b85429598ea531743.jpg" alt="">
+                <div class="overlay">
+                    <div style="font-weight:800">👶 Avoir un mini-toi</div>
+                    <div style="opacity:.85">tes yeux, ton sourire… un petit miracle à nous deux.</div>
+                </div>
+            </div>
+            <div class="panel"><img src="https://i.pinimg.com/736x/5d/15/c5/5d15c5da412e12f5e10971fb4a790f36.jpg" alt="">
+                <div class="overlay">
+                    <div style="font-weight:800">🕰️ Vieillir ensemble</div>
+                    <div style="opacity:.85">cheveux gris, cœurs jeunes, et toujours la même tendresse.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ================= 07. Mur Polaroid ================= -->
+    <section id="polaroid">
+        <div class="title">Mur Polaroid</div>
+        <p class="subtitle">Clique une photo pour ouvrir la description avec l'image en fond.</p>
+        <div class="wall mt" id="polaroidWall">
+            <div class="polaroid" data-desc="La toute première fois où l’on s’est perdus dans une conversation infinie, parlant de mille choses sans importance… mais
+                avec ce sentiment d’être exactement là où je devais être — avec toi"
+                data-img="https://i.pinimg.com/1200x/f1/19/6a/f1196a22b1e080872cf990c41e965bd8.jpg" style="--r:-4">
+                <img src="https://i.pinimg.com/1200x/f1/19/6a/f1196a22b1e080872cf990c41e965bd8.jpg" alt="" />
+                <div class="caption">Nos nuits blanches.</div>
+            </div>
+            <div class="polaroid" data-desc="Ce jour où j’ai goûté ton plat — ton fameux ma9aroun. J’te jure, c’était pas juste un repas, c’était une déclaration
+                d’amour en creme fraiche " data-img="https://i.pinimg.com/736x/91/de/13/91de131c4d99c5a60c5dbf8d860c5fa5.jpg" style="--r:3">
+                <img src="https://i.pinimg.com/736x/91/de/13/91de131c4d99c5a60c5dbf8d860c5fa5.jpg" alt="" />
+                <div class="caption">Les pâtes de l’amour.</div>
+            </div>
+            <div class="polaroid" data-desc="Notre premier date après être enfin devenus un couple,à la plage, marchant comme deux oiseaux amoureux, perdus dans les pensées l’un de l’autre, emportés par la douceur du vent et de nos regards" data-img="https://i.pinimg.com/736x/6d/61/4d/6d614d7e0507b419738bbeaa1c779370.jpg" style="--r:-7">
+                <img src="https://i.pinimg.com/736x/6d/61/4d/6d614d7e0507b419738bbeaa1c779370.jpg" alt="" />
+                <div class="caption">Notre première vraie date.</div>
+            </div>
+            <div class="polaroid" data-desc="Ton tout premier cadeau, ces petites fleurs fragiles que t’as dessiné pour moi… elles n’ont jamais fané, pas plus que mes
+                sentiments" data-img="https://i.pinimg.com/736x/22/ca/1a/22ca1a8d8f604e6cef4da7f822c4107e.jpg" style="--r:-7">
+                <img src="https://i.pinimg.com/736x/22/ca/1a/22ca1a8d8f604e6cef4da7f822c4107e.jpg" alt="" />
+                <div class="caption">Les fleurs en papier.</div>
+            </div>
+            <div class="polaroid" data-desc="Nos selfies bizarres, flous, parfaits — immortalisant des rires sincères et un amour encore timide. Aujourd’hui encore,
+                ils ornent nos écrans comme des petits serments silencieux" data-img="https://i.pinimg.com/1200x/26/80/14/26801415fe51678aaf411b7f269d565d.jpg" style="--r:-7">
+                <img src="https://i.pinimg.com/1200x/26/80/14/26801415fe51678aaf411b7f269d565d.jpg" alt="" />
+                <div class="caption">Selfies & douce folie.</div>
+            </div>
+            <div class="polaroid" data-desc="Ce moment où nos doigts se sont frôlés pour la première fois — j’étais inconsciente, mais mon cœur, lui, s’en
+                souvient" data-img="https://i.pinimg.com/736x/b3/bb/2e/b3bb2ea47d00763889dd8bf2885da397.jpg" style="--r:-7">
+                <img src="https://i.pinimg.com/736x/b3/bb/2e/b3bb2ea47d00763889dd8bf2885da397.jpg" alt="" />
+                <div class="caption"> Main dans la main (même inconsciente).</div>
+            </div>
+            <div class="polaroid" data-desc="Ce hasard ridicule et mignon où nos couleurs se sont accordées… comme si l’univers savait déjà qu’on allait s’appartenir." data-img="https://i.pinimg.com/736x/7b/51/14/7b5114dd868b607821085de5e3c9ec08.jpg" style="--r:-7">
+                <img src="https://i.pinimg.com/736x/7b/51/14/7b5114dd868b607821085de5e3c9ec08.jpg" alt="" />
+                <div class="caption">Sous-vêtements assortis</div>
+            </div>
+            <div class="polaroid" data-desc="On dansait doucement dans ma chambre, juste toi et moi, le cœur léger… jusqu’à ce que ma mère entre. Un moment gênant, mais tellement doux qu’on en rit encore." data-img="https://i.pinimg.com/736x/ee/6a/4e/ee6a4e0e3a431ff84383c8d8017c3bfb.jpg" style="--r:-7">
+                <img src="https://i.pinimg.com/736x/ee/6a/4e/ee6a4e0e3a431ff84383c8d8017c3bfb.jpg" alt="" />
+                <div class="caption">La danse interrompue par maman</div>
+            </div>
+            <div class="polaroid" data-desc="Le premier “je t’aime” — timide, maladroit, mais gravé pour toujours sans oublier le MESK aa babe :p ." data-img="https://i.pinimg.com/736x/4f/3a/df/4f3adff3c7173388c49f77c4de354856.jpg" style="--r:-7">
+                <img src="https://i.pinimg.com/736x/4f/3a/df/4f3adff3c7173388c49f77c4de354856.jpg" alt="" />
+                <div class="caption">“Je t’aime” tremblant</div>
+            </div>
+            <div class="polaroid" data-desc="Quand tu m’as offert ce Candia Shoko, j’ai pas compris… mais maintenet je sais que c’était ta manière douce de dire “je t’aime”." data-img="https://i.pinimg.com/736x/21/25/46/212546deeb5ffc3648b05705d520f780.jpg" style="--r:-7">
+                <img src="https://i.pinimg.com/736x/21/25/46/212546deeb5ffc3648b05705d520f780.jpg" alt="" />
+                <div class="caption">Candia Shoko & amour caché</div>
+            </div>
+            <div class="polaroid" data-desc="Tu me cherchais tout le temps… et j’adorais ça, même si j’faisais semblant de râler." data-img="https://i.pinimg.com/736x/29/5f/e3/295fe3e0d821c59debc3f97ca886c784.jpg" style="--r:-7">
+                <img src="https://i.pinimg.com/736x/29/5f/e3/295fe3e0d821c59debc3f97ca886c784.jpg" alt="" />
+                <div class="caption">Tes taquineries sans fin</div>
+            </div>
+            <div class="polaroid" data-desc="Ce jour où tu m’as allumée exprès, puis t’as fui comme un lâche adorable — j’te déteste pour ça (ou pas)." data-img="https://i.pinimg.com/736x/97/93/61/979361324f33ea4053e1158b0f6ed851.jpg" style="--r:-7">
+                <img src="https://i.pinimg.com/736x/97/93/61/979361324f33ea4053e1158b0f6ed851.jpg" alt="" />
+                <div class="caption">. La fuite du coupable</div>
+            </div>
+            <div class="polaroid" data-desc="Ces nuits où on parlait sur le balcon, sous la lune… juste nous et le silence du monde et parfois le steve de samy." data-img="https://i.pinimg.com/736x/4f/6f/5e/4f6f5e13bb49a1222595d03d2c6fd5b0.jpg" style="--r:-7">
+                <img src="https://i.pinimg.com/736x/4f/6f/5e/4f6f5e13bb49a1222595d03d2c6fd5b0.jpg" alt="" />
+                <div class="caption">Balcon et clair de lune</div>
+            </div>
+            <div class="polaroid" data-desc="Nos étreintes dans la salle de bain, risquées mais si pleines de chaleur et de tendresse." data-img="https://i.pinimg.com/736x/17/53/e8/1753e879fbdfd93c46f7bdda2ba4d30e.jpg" style="--r:-7">
+                <img src="https://i.pinimg.com/736x/17/53/e8/1753e879fbdfd93c46f7bdda2ba4d30e.jpg" alt="" />
+                <div class="caption">Bisous clandestins</div>
+            </div>
+            <div class="polaroid" data-desc="Hésitants, nerveux, mais brûlants de désir — notre premier baiser, un feu doux et sincère." data-img="https://i.pinimg.com/736x/42/02/fc/4202fc6a1b1378fa08816044c7ab5f9d.jpg" style="--r:-7">
+                <img src="https://i.pinimg.com/736x/42/02/fc/4202fc6a1b1378fa08816044c7ab5f9d.jpg" alt="" />
+                <div class="caption">Premier bisou, premier frisson</div>
+            </div>
+            <div class="polaroid" data-desc="Tes lettres, tes petites cartes… si mignonnes, si toi. Mon artiste, mon mari créatif." data-img="https://i.pinimg.com/1200x/9a/9c/0c/9a9c0cbf8bcb8254fd2d996bbe9e68e5.jpg" style="--r:-7">
+                <img src="https://i.pinimg.com/1200x/9a/9c/0c/9a9c0cbf8bcb8254fd2d996bbe9e68e5.jpg" alt="" />
+                <div class="caption">Lettres et cartes d’amour</div>
+            </div>
+            <div class="polaroid" data-desc="Une improvisation bizarre, stressante, mais si intense… notre petit secret, notre folie douce" data-img="https://i.pinimg.com/736x/f6/c4/34/f6c4344b7b5369a9ed590b1ce203231d.jpg" style="--r:-7">
+                <img src="https://i.pinimg.com/736x/f6/c4/34/f6c4344b7b5369a9ed590b1ce203231d.jpg" alt="" />
+                <div class="caption">Le cute “ahem</div>
+            </div>
+            <div class="polaroid" data-desc="Ce jour où je t’ai donné cet élastique à cheveux — on n’était même pas ensemble, mais c’était déjà “nous”." data-img="https://i.pinimg.com/1200x/56/30/1f/56301f04b4443b8c70f08237de48b3ec.jpg" style="--r:-7">
+                <img src="https://i.pinimg.com/1200x/56/30/1f/56301f04b4443b8c70f08237de48b3ec.jpg" alt="" />
+                <div class="caption">Le chouchou oublié</div>
+            </div>
+            <div class="polaroid" data-desc="Les appels interminables, les jeux idiots, les fous rires sans fin… le bonheur pur." data-img="https://i.pinimg.com/1200x/55/f0/f7/55f0f7a096e7c0a0d67ed45ce34a0ca5.jpg" style="--r:-7">
+                <img src="https://i.pinimg.com/1200x/55/f0/f7/55f0f7a096e7c0a0d67ed45ce34a0ca5.jpg" alt="" />
+                <div class="caption">Nos appels et nos rires</div>
+            </div>
+            <div class="polaroid" data-desc="Le jour où tu m’as offert la boîte à musique j’ai presque cru que c’était une demande en mariage.(c'etait une demande en mariage , siibon je suis ta wife)" data-img="https://i.pinimg.com/736x/66/34/3f/66343f1d4d1985091e48222f44a39163.jpg" style="--r:-7">
+                <img src="https://i.pinimg.com/736x/66/34/3f/66343f1d4d1985091e48222f44a39163.jpg" alt="" />
+                <div class="caption">La boîte à musique</div>
+            </div>
+        </div>
+
+        <div class="modal" id="pModal" role="dialog" aria-modal="true">
+            <div class="modal-card">
+                <div class="bg" id="pBg"></div>
+                <div class="content">
+                    <button class="btn" onclick="closePolaroid()">Fermer</button>
+                    <h3 id="pText" style="margin-top:12px"></h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= 08. Planificateur étoilé ================= -->
+    <!-- === updated Planificateur étoilé section (fixed + black text) === -->
+<section id="planner" style="color:#111 !important;">
+  <div class="title" style="color:#111;">Planificateur étoilé</div>
+  <p class="subtitle" style="color:#111;">Choisis des cartes pour imaginer notre futur ✨ (mariage, maison, voiture, enfants... et plus encore)</p>
+  <div class="stars mt" id="starsGrid" style="color:#111;">
+    <div class="starcard">💍 Mariage de rêve</div>
+    <div class="starcard">🏠 Notre maison </div>
+    <div class="starcard">🚗 Voiture de nos rêves</div>
+    <div class="starcard">🍼 Nos jumeaux adorables</div>
+    <div class="starcard">🌍 Voyage autour du monde</div>
+    <div class="starcard">🐾 Nos animaux de compagnie</div>
+    <div class="starcard">💼 Notre job de rêve</div>
+    <div class="starcard">🎨 Nos créations ensemble</div>
+    <div class="starcard">notre cuisine</div>
+    <div class="starcard">notre chambre</div>
+    <div class="starcard">notre sousol</div>
+    <div class="starcard">notre jardin</div>
+    <div class="starcard">notre piscine</div>
+    <div class="starcard">notre dates</div>
+    <div class="starcard">notre sale de bain</div>
+    <div class="starcard">notre activité de toujours</div>
+    <div class="starcard">notre chef la plus part du temps</div>
+    <div class="starcard">le bébé dans notre relation</div>
+  </div>
+
+  <button class="btn mt" style="background:transparent; color:#111; border:2px solid #111;" onclick="compilePlan()">Générer notre constellation</button>
+  <div class="card mt" id="planOut" style="display:none; color:#111; background:rgba(255,255,255,0.55);"></div>
+
+  <script>
+    const stars = document.querySelectorAll('#planner .starcard');
+    stars.forEach(card => {
+      card.addEventListener('click', () => {
+        card.classList.toggle('active');
+      });
+    });
+
+    function compilePlan() {
+      const chosen = Array.from(document.querySelectorAll('#planner .starcard.active')).map(c => c.textContent.trim());
+      const out = document.getElementById('planOut');
+
+      if (chosen.length === 0) {
+        out.style.display = 'block';
+        out.innerHTML = '🌌 Choisis quelques étoiles avant de générer ta constellation, mon cœur.';
+        return;
+      }
+
+      const poetic = `Sous un ciel infini, nos rêves s'alignent : ${chosen.join(', ')}...
+
+Chaque étoile raconte un fragment de notre futur — des rires partagés, des voyages fous, des nuits d'amour et des promesses gravées dans le temps. 💖`;
+
+      out.style.display = 'block';
+      out.innerHTML = poetic.replace(/
+/g, '<br>');
+    }
+  </script>
+</section>
+
+    <!-- ================= 09. Chat‑log histoire ================= -->
+    <section id="chat">
+        <div class="title">Chat‑log — comment j'ai capté que je t'aimais</div>
+        <p class="subtitle">Une mini histoire en messages (tu peux éditer/ajouter + tes GIFs).</p>
+        <div class="chatbox mt" id="chatBox">
+            <div class="msg">
+                <div class="bubble">Moi (avant): "On est juste potes hein."</div>
+            </div>
+            <div class="msg me">
+                <div class="bubble">Moi (maintenant): LOL. Qui j'essaie de convaincre ?</div>
+            </div>
+            <div class="msg">
+                <div class="bubble">Toi: "Tu manges ?"</div>
+            </div>
+            <div class="msg me">
+                <div class="bubble">Mon cœur: *fait trois saltos.*</div>
+            </div>
+            <div class="msg">
+                <div class="bubble">Un jour sans message = journée chelou.</div>
+            </div>
+            <div class="msg me">
+                <div class="bubble">Quand t'as dit "prends soin de toi" ➝ j'ai fondu.</div>
+            </div>
+            <div class="msg">
+                <div class="bubble">Je te vois ➝ cerveau lag, sourire bête.</div>
+            </div>
+            <div class="msg me">
+                <div class="bubble">Bref… j'ai craqué, depuis longtemps.</div>
+            </div>
+            <div class="msg"><img class="gif" src="assets/chat1.gif" alt="gif" /></div>
+            <div class="msg me"><img class="gif" src="assets/chat2.gif" alt="gif" /></div>
+            <div class="msg">
+                <div class="bubble">Moi (avant): "On est juste potes hein."</div>
+            </div>
+            <div class="msg me">
+                <div class="bubble">Moi (maintenant): LOL. Qui j'essaie de convaincre ?</div>
+            </div>
+            <div class="msg">
+                <div class="bubble">Toi: "Tu manges ?"</div>
+            </div>
+            <div class="msg me">
+                <div class="bubble">Mon cœur: *fait trois saltos.*</div>
+            </div>
+            <div class="msg">
+                <div class="bubble">Un jour sans message = journée chelou.</div>
+            </div>
+            <div class="msg me">
+                <div class="bubble">Quand t'as dit "prends soin de toi" ➝ j'ai fondu.</div>
+            </div>
+            <div class="msg">
+                <div class="bubble">Je te vois ➝ cerveau lag, sourire bête.</div>
+            </div>
+            <div class="msg me">
+                <div class="bubble">Bref… j'ai craqué, depuis longtemps.</div>
+            </div>
+            <div class="msg"><img class="gif" src="assets/chat1.gif" alt="gif" /></div>
+            <div class="msg me"><img class="gif" src="assets/chat2.gif" alt="gif" /></div>
+        </div>
+    </section>
+
+    <!-- ================= 10. Fin — lettre cœur ================= -->
+    <section id="end">
+        <canvas id="canvas"></canvas>
+        <div id="message">
+            <i><H4>
+                𝐌𝐨𝐧 𝐚𝐦𝐨𝐮𝐫,
+                 aujourd’hui c’est ton anniversaire... et je crois que je ne pourrais pas laisser passer ce jour sans
+                te dire à quel point je t’aime, à quel point tu comptes pour moi, à quel point je te remercie d’exister 🥺💗 depuis que
+                tu es entré dans ma vie, tout a pris un sens... une chaleur, une lumière, une raison ✨ avant toi, je n’avais pas
+                vraiment envie de vivre, je ne rêvais pas trop, je ne me projetais pas... et puis tu es revenu, sans prévenir, et tu as
+                tout changé 💞 tu m’as redonné goût à la vie, à l’amour, à moi-même 🕊️ on se connaît depuis toujours, depuis l’enfance,
+                quand on se chamaillait pour rien mais qu’on voulait toujours rester ensemble 🫶 on partageait déjà ce lien spécial,
+                cette connexion qu’aucun mot ne peut décrire 💫 puis le temps nous a séparés... jusqu’à ce qu’on se retrouve en 2023, et
+                que tout reprenne vie, plus fort, plus vrai, plus beau 🌷 et ce 1er juillet 2025 restera gravé pour toujours dans mon
+                cœur — le jour où tout a pris sens, le jour de notre évidence 💋 je ne t’ai pas choisi, je t’ai voulu, de tout mon cœur
+                ❤️ j’ai cru que je ne pouvais pas t’avoir à cause de mes failles, de mon passé, de mes imperfections... mais toi, tu
+                m’as choisi 🥹 tu as vu en moi ce que moi je ne voyais plus, tu m’as accepté telle que je suis, tu m’as aimée sans
+                conditions 💌 tu es parfait, mon amour — pas seulement par ton regard, ton sourire ou ta voix, mais par ton âme, ton
+                cœur, ta douceur, ton calme, ton intelligence, ta bonté 💖 tu es rare, vrai, pur... et tu es tout ce que j’ai toujours
+                cherché sans le savoir 🌙 avec toi, j’ai compris que l’amour ce n’est pas juste des mots, c’est une présence, une
+                sécurité, une paix 🤍 tu es devenu ma maison, mon repère, ma vérité... merci pour tout, pour ta patience, ton écoute,
+                ton amour, ton respect, ton existence 🕯️ 
+                joyeux anniversaire, zinou-iw, je t’aime d’un amour infini,
+                de celui qui ne s’explique pas, mais qui se ressent dans chaque battement de mon cœur 💞🌷 💌
+            
+            </H4> </i>
+        </div>
+
+        <script>
+            const canvas = document.getElementById("canvas");
+            const ctx = canvas.getContext("2d");
+            let width = window.innerWidth;
+            let height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+
+            function rand() {
+                return Math.random();
+            }
+
+            let heartPointsCount = 150;
+            let traceCount = 20;
+            let particles = [];
+
+            function createParticles() {
+                particles = [];
+                for (let i = 0; i < heartPointsCount; i++) {
+                    let x = rand() * width;
+                    let y = rand() * height;
+
+                    particles[i] = {
+                        vx: 0,
+                        vy: 0,
+                        R: 2,
+                        speed: rand() + 5,
+                        q: Math.floor(rand() * heartPointsCount),
+                        D: 2 * (i % 2) - 1,
+                        force: 0.2 * rand() + 0.7,
+                        f: `hsla(0, ${Math.floor(40 * rand() + 60)}%, ${Math.floor(60 * rand() + 20)}%, .3)`,
+                        trace: []
+                    };
+
+                    for (let k = 0; k < traceCount; k++) {
+                        particles[i].trace[k] = { x: x, y: y };
+                    }
+                }
+            }
+            createParticles();
+
+            let config = {
+                traceK: 0.4,
+                timeDelta: 0.01
+            };
+
+            function heartPosition(t) {
+                return {
+                    x: Math.pow(Math.sin(t), 3),
+                    y: -(0.8125 * Math.cos(t) - 0.3125 * Math.cos(2 * t) - 0.125 * Math.cos(3 * t) - 0.0625 * Math.cos(4 * t))
+                };
+            }
+
+            function loop() {
+                ctx.fillStyle = "rgba(0,0,0,0.2)";
+                ctx.fillRect(0, 0, width, height);
+
+                for (let i = 0; i < particles.length; i++) {
+                    let u = particles[i];
+                    let pos = heartPosition(u.q * Math.PI / heartPointsCount * 2);
+
+                    let dx = (u.trace[0].x - (pos.x * width / 4 + width / 2));
+                    let dy = (u.trace[0].y - (pos.y * height / 4 + height / 2));
+                    let d = Math.sqrt(dx * dx + dy * dy) || 1;
+
+                    u.vx += (-dx / d) * u.force;
+                    u.vy += (-dy / d) * u.force;
+
+                    u.vx *= 0.95;
+                    u.vy *= 0.95;
+
+                    u.trace[0].x += u.vx * u.speed;
+                    u.trace[0].y += u.vy * u.speed;
+
+                    for (let k = 0; k < u.trace.length - 1; k++) {
+                        u.trace[k + 1].x += (u.trace[k].x - u.trace[k + 1].x) * config.traceK;
+                        u.trace[k + 1].y += (u.trace[k].y - u.trace[k + 1].y) * config.traceK;
+                    }
+
+                    ctx.fillStyle = u.f;
+                    for (let k = 0; k < u.trace.length; k++) {
+                        ctx.fillRect(u.trace[k].x, u.trace[k].y, u.R, u.R);
+                    }
+                }
+
+                requestAnimationFrame(loop);
+            }
+
+            loop();
+
+            let firstClick = true;
+
+            // 🎇 Click effect
+            if (canvas) {
+                canvas.addEventListener("click", (evt) => {
+                    // respawn particles around click
+                    for (let i = 0; i < particles.length; i++) {
+                        particles[i].trace[0].x = evt.clientX;
+                        particles[i].trace[0].y = evt.clientY;
+                    }
+
+                    // show the message only once
+                    if (firstClick) {
+                        firstClick = false;
+                        const msg = document.getElementById("message");
+                        msg.classList.add('show');
+
+                        // fade out after 60 seconds
+                        setTimeout(() => {
+                            msg.classList.remove('show');
+                        }, 60000);
+                    }
+                });
+        </script>
+    </section>
+
+    <!-- ================= 11. Easter Eggs — Open when... ================= -->
+    <section id="eggs">
+        <div class="title">Écris pour moi</div>
+        <p class="subtitle">Entre un déclencheur (ex: <i>je suis heureux </i>).
+        </p>
+        <div class="eggbox card">
+            <div class="egg-input">
+                <input id="eggInput" placeholder="Ex: je suis heureux" />
+                <button class="btn" onclick="openEgg()">Ouvrir</button>
+            </div>
+            <div id="eggResult" class="card mt" style="display:none"></div>
+            <small style="opacity:.7">Déclencheurs supportés (en minuscules): je suis triste, je suis heureux/contente,
+                je suis en colère, je suis déçue, tu me manques, j'ai besoin de toi, j'ai besoin d'un câlin, j'ai besoin
+                d'un bisou, je pense à nous, le monde est dur, j'ai gagné, j'ai perdu, je me sens bas, je n'arrive pas à
+                dormir, 1 juillet, 24 novembre, 31 décembre, je veux savoir si tu me fais confiance, je veux savoir
+                combien tu me veux, je veux savoir combien tu m'aimes, on emménage, on s'amuse, on fait de notre mieux,
+                on se fiance, on est heureux, on se marie, on voyage, je suis enceinte, on a un enfant, je suis
+                prêt.</small>
+        </div>
+        <br>
+        <div class="love-banner">JE T'AIME</div>
+    </section>
+
+    <script>
+                /* ==========================================================
+                   UTILITAIRES & AUDIO (petits clics mignons) — hardening
+                ========================================================== */
+                const S = {
+                    show: id => {
+                        const secs = document.querySelectorAll('section');
+                        secs.forEach(sec => sec.classList.remove('active'));
+                        const target = document.getElementById(id);
+                        if (target) requestAnimationFrame(() => target.classList.add('active'));
+                    },
+                    clickTone() {
+                        try {
+                            const Ctx = window.AudioContext || window.webkitAudioContext;
+                            if (!Ctx) return; // vieux navigateurs
+                            const ctx = new Ctx();
+                            const o = ctx.createOscillator();
+                            const g = ctx.createGain();
+                            o.type = 'sine'; o.frequency.value = 660;
+                            g.gain.value = 0.0001; g.gain.exponentialRampToValueAtTime(0.02, ctx.currentTime + .01);
+                            o.connect(g); g.connect(ctx.destination);
+                            const start = () => {
+                                o.start();
+                                g.gain.exponentialRampToValueAtTime(0.00001, ctx.currentTime + .12);
+                                o.stop(ctx.currentTime + .14);
+                            };
+                            if (ctx.state === 'suspended') ctx.resume().then(start).catch(() => { }); else start();
+                        } catch (e) { /* ignore audio errors to avoid breaking UI */ }
+                    }
+                };
+
+                /* ==========================================================
+                   01. Gate / Welcome — robust 1610 handling
+                ========================================================== */
+                const keyInput = document.getElementById('key');
+                const enterBtn = document.getElementById('enterBtn');
+                const loading = document.getElementById('loading');
+                const keyError = document.getElementById('keyError');
+
+                const sanitizeDigits = str => (str.match(/\d/g) || []).join('').slice(0, 4);
+
+                function badShake(el) {
+                    el.classList.add('bad');
+                    setTimeout(() => el.classList.remove('bad'), 400);
+                }
+
+                function enterSite() {
+                    const v = sanitizeDigits(keyInput.value);
+                    if (v === '0107') {
+                        keyError.style.display = 'none';
+                        loading.style.display = 'inline-flex';
+                        setTimeout(() => {
+                            loading.style.display = 'none';
+                            S.show('menu');
+                            S.clickTone();
+                            location.hash = '#menu';
+                        }, 300); // petit feedback
+                    } else {
+                        keyError.style.display = 'block';
+                        badShake(keyInput);
+                    }
+                }
+
+                // Keep input numeric & auto-submit at 4 digits
+                keyInput.addEventListener('input', () => {
+                    const before = keyInput.value;
+                    keyInput.value = sanitizeDigits(before);
+                    if (keyInput.value.length === 4) enterSite();
+                }, { passive: true });
+
+                // Enter / Go key support across browsers & mobiles
+                ['keydown', 'keyup'].forEach(type => {
+                    keyInput.addEventListener(type, e => { if (e.key === 'Enter') enterSite(); });
+                });
+
+                enterBtn.addEventListener('click', enterSite);
+
+                /* ==========================================================
+                   02. Menu navigation (bulle ➝ section)
+                ========================================================== */
+                document.querySelectorAll('.menu-item').forEach(btn => {
+                    btn.addEventListener('click', () => { S.clickTone(); S.show(btn.dataset.target); location.hash = '#' + btn.dataset.target; });
+                });
+
+                /* ==========================================================
+                   03. 120 étoiles — raisons que j'aime
+                ========================================================== */
+                // 📝 120 placeholders 
+                const reasons = [
+                    "Reason 1: [J’aime ton sourire]",
+                    "Reason 2: [J’aime ton toucher]",
+                    "Reason 3: [J’aime ta façon d’être attentionné]",
+                    "Reason 4: [J’aime ton intelligence]",
+                    "Reason 5: [J’aime tes yeux]",
+                    "Reason 6: [J’aime la façon dont tu m’aimes]",
+                    "Reason 7: [J’aime tes cheveux]",
+                    "Reason 8: [J’aime ta personnalité]",
+                    "Reason 9: [J’aime ton rire]",
+                    "Reason 10: [J’aime que tu me respectes]",
+                    "reason 11: [J’aime tes manières]",
+                    "Reason 12: [J’aime la façon dont tu me regardes]",
+                    "Reason 13: [J’aime ta sagesse]",
+                    "Reason 14: [J’aime ta sagesse]",
+                    "Reason 15: [J’aime ta voix quand t’es à moitié endormi]",
+                    "Reason 16: [J’aime ton honnêteté]",
+                    "Reason 17: [J’aime tes lèvres]",
+                    "Reason 18: [J’aime ta façon d’aider]",
+                    "Reason 19: [J’aime comment tu me fais sentir aimée]",
+                    "Reason 20: [J’aime comment tu prends soin de moi]",
+                    "Reason 21: [J’aime comment tu me fais sentir précieuse]",
+                    "Reason 22: [J’aime comment tu me fais me sentir suffisante juste en étant moi]",
+                    "Reason 23: [J’aime comment tu me soutiens dans tout ce que je fais]",
+                    "Reason 24: [J’aime comment tu me fais sentir en sécurité]",
+                    "Reason 25: [J’aime comment tu me traites comme ta petite princesse]",
+                    "Reason 26: [J’aime comment tu traites les gens]",
+                    "Reason 27: [J’aime ton style]",
+                    "Reason 28: [J’aime ta façon de parler]",
+                    "Reason 29: [J’aime ta façon de réfléchir]",
+                    "Reason 30: [J’aime quand tu parles de tes passions]",
+                    "Reason 31: [J’aime te voir dormir]",
+                    "Reason 32: [J’aime ta voix quand tu te réveilles]",
+                    "Reason 33: [J’aime quand tu me serres de derrière devant la fenêtre]",
+                    "Reason 34: [J’aime quand tu m’embrasses dans le cou sur le balcon]",
+                    "Reason 35: [J’aime la façon dont tu cuisines]",
+                    "Reason 36: [J’aime ta démarche]",
+                    "Reason 37: [J’aime tes goûts en musique]",
+                    "Reason 38: [J’aime tes goûts en anime]",
+                    "Reason 39: [J’aime comment tu t’occupes de chaque petit détail]",
+                    "Reason 40: [J’aime tes câlins]",
+                    "Reason 41: [J’aime tes bisous]",
+                    "Reason 42: [J’aime ton écriture]",
+                    "Reason 43: [J’aime la façon dont tu touches mon visage]",
+                    "Reason 44: [J’aime la façon dont tu tiens ma main]",
+                    "Reason 45: [J’aime quand tu me portes comme une princesse]",
+                    "Reason 46: [J’aime quand tu parles de moi]",
+                    "Reason 47: [J’aime qu’on ait les mêmes points de vue]",
+                    "Reason 48: [J’aime qu’on s’aime comme ça]",
+                    "Reason 49: [J’aime comment tu me fais sentir comme la seule fille au monde]",
+                    "Reason 50: [J’aime que je peux avoir confiance en toi]",
+                    "Reason 51: [J’aime à quel point je suis à l’aise avec toi]",
+                    "Reason 52: [J’aime que tu m’aies appris le vrai sens de l’amour]",
+                    "Reason 53: [J’aime que t’es toujours là pour moi]",
+                    "Reason 54: [J’aime comment tu prends soin de moi quand je suis malade]",
+                    "Reason 55: [J’aime la chaleur de ton corps le matin]",
+                    "Reason 56: [J’aime comment on se comprend sans parler]",
+                    "Reason 57: [J’aime que tu t’excuses toujours en premier, peu importe qui a tort]",
+                    "Reason 58: [J’aime que tu crois toujours en moi]",
+                    "Reason 59: [J’aime la force que tu me donnes]",
+                    "Reason 60: [J’aime que t’as toujours une réponse à mes galères]",
+                    "Reason 61: [J’aime t’écouter parler avec ta famille (trop chou d’ailleurs)]", 
+                    "Reason 62: [J'aime comme t'es canon]",
+                    "Reason 63: [J’aime comment tu prévois notre futur]",
+                    "Reason 64: [J’aime quand tu inventes des scénarios mignons de nous deux]",
+                    "Reason 65: [J’aime que tu me fasses confiance]",
+                    "Reason 66: [J’aime ta loyauté de ouf]",
+                    "Reason 67: [J’aime ta foi en l’amour]",
+                    "Reason 68: [J’aime ton regard]",
+                    "Reason 69: [J’aime quand tu te montres vulnérable avec moi]",
+                    "Reason 70: [J’aime ton côté protecteur]",
+                    "Reason 71: [J’aime ton kiff de créer des souvenirs]",
+                    "Reason 72: [J’aime tes lettres d’amour]",
+                    "Reason 73: [J’aime que je sois toujours dans tes pensées]",
+                    "Reason 74: [J’aime quand tu danses]",
+                    "Reason 75: [J’aime ta créativité]",
+                    "Reason 76: [J’aime ton humour]",
+                    "Reason 77: [J’aime que tu me dises ce que tu ressens]",
+                    "Reason 78: [J’aime quand tu fais ton adorable]",
+                    "Reason 79: [J’aime ton côté collant (mignon)]",
+                    "Reason 80: [J’aime qu’on va construire notre futur ensemble]",
+                    "Reason 81: [J’aime l’éclat dans tes yeux]",
+                    "Reason 82: [J’aime comment on finit les phrases de l’autre]",
+                    "Reason 83: [J’aime que tu restes toujours à mes côtés]",
+                    "Reason 84: [J’aime la façon dont je t’excite sans rien faire]",
+                    "Reason 85: [J’aime que tu ferais tout ce que je dis]",
+                    "Reason 86: [J’aime que tu me rends jamais jalouse]",
+                    "Reason 87: [J’aime que tu m’appartiens et je t’appartiens]",
+                    "Reason 88: [J’aime comment tu manges] ",
+                    "Reason 89: [J’aime ton geste “come here”]",
+                    "Reason 90: [J’aime comment tu bois de l’eau (trop mignon sérieux)]",
+                    "Reason 91: [J’aime quand tu me fixes même dans une salle pleine de monde]",
+                    "Reason 92: [J’aime quand tu partages tes playlists avec moi]",
+                    "Reason 93: [J’aime quand on se prend la tête un peu]",
+                    "Reason 94: [J’aime quand t’es vénère (mais pas contre moi)]",
+                    "Reason 95: [J’aime que tu veux toujours câliner et dormir avec moi]",
+                    "Reason 96: [J’aime quand tu jalouses mon nounoughs bobo]",
+                    "Reason 97: [J’aime tout l’effort que tu mets juste pour me faire plaisir]",
+                    "Reason 98: [J’aime que tu me rends meilleure]",
+                    "Reason 99: [J’aime que je peux être moi-même avec toi]",
+                    "Reason 100: [J’aime que t’as toujours une idée fun à faire]",
+                    "Reason 101: [J’aime quand t’es trop mignon quand t’es grognon]",
+                    "Reason 102: [J’aime nos longues discussions sur nos choix à deux]",
+                    "Reason 103: [J’aime quand tu m’expliques pourquoi tu m’aimes]",
+                    "Reason 104: [J’aime que tu m’ouvres toujours la porte]",
+                    "Reason 105: [J’aime tes petites attentions créatives pour me montrer que tu m’aimes]",
+                    "Reason 106: [J’aime que tu portes mes sacs lourds sans jamais râler]",
+                    "Reason 107: [J’aime qu’on puisse tout faire ensemble et que ça soit toujours génial]",
+                    "Reason 108: [J’aime quand tu deviens jaloux pour des broutilles]",
+                    "Reason 109: [J’aime comment tu prends soin de moi même quand j’oublie de le faire]",
+                    "Reason 110: [J’aime tes grimaces et tes blagues nulles mais trop drôles]",
+                    "Reason 111: [J’aime ton intelligence émotionnelle de fou]",
+                    "Reason 112: [J’aime que tu sais toujours ce que je ressens, comme par magie]",
+                    "Reason 113: [J’aime tes gros muscles (oui oui 👀)]",
+                    "Reason 114: [J’aime ton obsession pour moi]",
+                    "Reason 115: [J’aime comment tu m’aides à voir les choses autrement]",
+                    "Reason 116: [J’aime que tu m’écoutes même quand je parle pour rien]",
+                    "Reason 117: [J’aime quand tu me fais rire jusqu’à avoir mal au ventre]",
+                    "Reason 118: [J’aime que tu retiens tous mes petits détails]",
+                    "Reason 119: [J’aime comment tu me motives à être la meilleure version de moi]",
+                    "Reason 120: [J’aime que tu transformes n’importe quel endroit en “chez moi” quand t’es là]",
+                ];
+
+                const sky = document.getElementById('sky');
+                const reasonBox = document.getElementById('reasonBox');
+
+                function makeStars() {
+                    if (!sky.isConnected) return;
+                    const w = sky.clientWidth, h = sky.clientHeight;
+                    if (!w || !h) return;
+                    sky.innerHTML = '';
+                    for (let i = 0; i < reasons.length; i++) {
+                        const s = document.createElement('div');
+                        s.className = 'star';
+                        const x = Math.random() * (w - 30) + 15;
+                        const y = Math.random() * (h - 30) + 15;
+                        s.style.left = x + 'px';
+                        s.style.top = y + 'px';
+                        s.title = `Étoile ${i + 1}`;
+
+                        // Click event: show reason + glow star
+                        s.addEventListener('click', () => {
+                            reasonBox.textContent = reasons[i];
+                            S.clickTone();
+                            s.classList.add('star-glow'); // add glowing style
+                        });
+
+                        sky.appendChild(s);
+                    }
+                }
+
+                // Keep stars responsive
+                const ro = new ResizeObserver(() => makeStars());
+                ro.observe(sky);
+                requestAnimationFrame(makeStars);
+
+
+
+                /* ==========================================================
+                   04. Love Quiz — édite questions[] si besoin
+                ========================================================== */
+                /* === Love Quiz Logic === */
+                /* === Love Quiz Logic === */
+                const quizData = [
+                    { q: "Sabrina t’aime plus.", options: ["Vrai", "Faux"], correct: 0 },
+                    { q: "Zinou achkith plus.", options: ["Vrai", "Faux"], correct: 0 },
+                    { q: "Notre premier DATE était….", options: ["À la maison devant un film", "À la plage"], correct: 1 },
+                    { q: "Notre premier bisou par accident était dans la salle de bain.", options: ["Vrai", "Faux"], correct: 1 },
+                    { q: "Ton premier cadeau pour moi était….", options: ["Boîte à musique", "Fleurs en papier"], correct: 1 },
+                    { q: "Le premier anime qu’on a regardé ensemble était The Fragrant Flower Blooms with Dignity..", options: ["Vrai", "Faux"], correct: 1 },
+                    { q: "Quelle couleur de t-shirt je portais le 1er juillet ?.", options: ["beige", "noir"], correct: 0 },
+                    { q: "Qui a dit « je t’aime » en premier ?.", options: ["toi", "moi"], correct: 0 },
+                    { q: "Quelle chanson me fait penser à toi ?.", options: ["Reine de Dadju", "Selena Gomez – I Want You Here Tonight"], correct: 1 },
+                    { q: "Quel plat finissons-nous toujours par manger ensemble ?.", options: ["crispy chicken", "pizza"], correct: 0 },
+                    { q: "Quel était notre tout premier petit code d’amour ?.", options: ["boo", "meow"], correct: 0 },
+                    { q: "Quelle est ma glace préférée ?.", options: ["fraise", "chocolat"], correct: 1 },
+                    { q: "J’ai été la première à dire « tu me manques.", options: ["vrai", "Faux"], correct: 0 },
+                    { q: "Quelle est la première chose que je te dis le matin ?.", options: ["bonjour", "helloow"], correct: 1 },
+                    { q: "Quand est-ce qu’on a dansé ensemble pour la première fois ?.", options: ["2023", "2025"], correct: 0 },
+                    { q: "Avec quelle main je tiens la tienne le plus souvent ?.", options: ["gauche", "droite"], correct: 1 },
+                    { q: "Quelle boisson partageons-nous toujours ?.", options: ["coca cola", "candia choco"], correct: 1 },
+                    { q: "Où étions-nous lors de notre première longue discussion ?.", options: ["chez mounir", "en ligne sur insta"], correct: 0 },
+                    { q: "La plus belle chose qui me soit arrivée dans la vie ?.", options: ["ZINOU", "ZINOU"], correct: 0 },
+                ];
+
+                const total = quizData.length;
+                let idx = 0;
+                const answers = new Array(total).fill(null);
+
+                const stage = document.getElementById("stage");
+                const nextBtn = document.getElementById("nextBtn");
+                const prevBtn = document.getElementById("prevBtn");
+                const pos = document.getElementById("pos");
+                const bar = document.getElementById("bar");
+                const resetBtn = document.getElementById("resetBtn");
+
+                function render() {
+                    pos.textContent = `Question ${idx + 1} / ${total}`;
+                    bar.style.width = `${(idx) / total * 100}%`;
+
+                    const item = quizData[idx];
+                    const selected = answers[idx];
+
+                    stage.innerHTML = `
+    <div class="quiz-question">${item.q}</div>
+    <div class="quiz-options" role="radiogroup"></div>
+  `;
+
+                    const list = stage.querySelector(".quiz-options");
+                    item.options.forEach((label, i) => {
+                        const wrap = document.createElement("label");
+                        wrap.className = "quiz-opt";
+                        wrap.dataset.checked = selected === i ? "true" : "false";
+                        wrap.innerHTML = `
+      <span class="dot"></span>
+      <input type="radio" name="opt" ${selected === i ? "checked" : ""} />
+      <span>${label}</span>
+    `;
+                        wrap.addEventListener("click", () => choose(i));
+                        list.appendChild(wrap);
+                    });
+
+                    prevBtn.disabled = idx === 0;
+                    nextBtn.disabled = selected === null;
+                    nextBtn.textContent = idx === total - 1 ? "Submit ✓" : "Next →";
+                }
+
+                function choose(i) {
+                    answers[idx] = i;
+                    [...stage.querySelectorAll(".quiz-opt")].forEach((el, k) => el.dataset.checked = (k === i).toString());
+                    nextBtn.disabled = false;
+                }
+
+                function next() {
+                    if (idx < total - 1) { idx++; render(); }
+                    else { showResult(); }
+                }
+                function prev() { if (idx > 0) { idx--; render(); } }
+                function reset() { for (let i = 0; i < answers.length; i++) answers[i] = null; idx = 0; render(); }
+
+                function showResult() {
+                    const corrects = answers.reduce((n, a, i) => n + (a === quizData[i].correct ? 1 : 0), 0);
+                    const pct = Math.round(corrects / total * 100);
+                    bar.style.width = "100%";
+
+                    const reviewItems = quizData.map((it, i) => {
+                        const got = answers[i];
+                        const ok = got === it.correct;
+                        const you = got != null ? it.options[got] : "<em>no answer</em>";
+                        const real = it.options[it.correct];
+                        return `
+      <div class="quiz-review-item ${ok ? "good" : "bad"}">
+        <strong>Q${i + 1}:</strong> ${it.q}<br>
+        Your answer: <b>${you}</b><br>
+        ${ok ? "" : "Correct answer: <b>" + real + "</b>"}
+      </div>
+    `;
+                    }).join("");
+
+                    stage.innerHTML = `
+    <div class="quiz-result">
+      <h2>You got ${corrects} / ${total} correct (${pct}%).</h2>
+      <div class="quiz-review">${reviewItems}</div>
+    </div>
+  `;
+
+                    nextBtn.textContent = "Try again ↺";
+                    nextBtn.disabled = false;
+                    nextBtn.onclick = reset;
+                    prevBtn.disabled = true;
+                }
+
+                nextBtn.addEventListener("click", next);
+                prevBtn.addEventListener("click", prev);
+                resetBtn.addEventListener("click", reset);
+
+                render();
+
+
+                /* ==========================================================
+
+
+                /* ==========================================================
+                   06. Polaroid — click => modal description avec bg image
+                ========================================================== */
+                const wall = document.getElementById('polaroidWall');
+                const pModal = document.getElementById('pModal');
+                const pBg = document.getElementById('pBg');
+                const pText = document.getElementById('pText');
+                wall.addEventListener('click', e => {
+                    const card = e.target.closest('.polaroid');
+                    if (!card) return;
+                    pBg.style.backgroundImage = `url('${card.dataset.img}')`;
+                    pText.textContent = card.dataset.desc;
+                    pModal.classList.add('active');
+                });
+                function closePolaroid() { pModal.classList.remove('active'); S.clickTone(); }
+                window.closePolaroid = closePolaroid;
+
+                /* ==========================================================
+                   07. Planner — cartes de choix
+                ========================================================== */
+                const starsGrid = document.getElementById('starsGrid');
+                const starGroups = {
+                    Mariage: ["Petit comité", "Grand mariage", "Fugue romantique"],
+                    Maison: ["Studio cosy", "Maison avec jardin", "Appart en ville"],
+                    Voiture: ["bmw", "audi", "les deux"],
+                    Enfants: ["laura", "aurélien", "les deux"],
+                    voyage :["canada","japan","tailand -.-"],
+                    pet:["chat","chien","poisson"],
+                    job:["no job","télétravail","travail de bureau"],
+                    creation:["notre histoir","notre manga","notre chanson"],
+                    cuisine:["dark","light","les deux"],
+                    chambre:["dark","light","les deux"],
+                    soussol:["gym","salle des jeux","garage"],
+                    jardin:["Jardin moderne minimaliste","Jardin romantique","Jardin bohème"],
+                    piscine:["Style lounge de nuit","Style moderne minimaliste","Style bohème chic"],
+                    dates:["Dîner  à la maison","Balade à la plage ou au bord d’un lac","Sortie en ville"],
+                    sale_de_bain:["baignoire","douche","les deux"],
+                    activité:["free fire","anime","combat des bisous"],
+                    chef:["zinou","sabrina","les deux"],
+                    le_bébé:["zinou","sabrina"],
+                 
+                };  
+                const plan = {};
+                function renderStars() {
+                    starsGrid.innerHTML = '';
+                    Object.entries(starGroups).forEach(([k, arr]) => {
+                        const card = document.createElement('div'); card.className = 'starcard';
+                        const title = document.createElement('div'); title.style.fontWeight = '800'; title.textContent = k; card.appendChild(title);
+                        const list = document.createElement('div'); list.className = 'grid'; list.style.marginTop = '10px';
+                        arr.forEach(opt => {
+                            const b = document.createElement('button'); b.className = 'btn'; b.textContent = opt;
+                            b.addEventListener('click', () => { plan[k] = opt; card.classList.add('active'); S.clickTone(); });
+                            list.appendChild(b);
+                        });
+                        card.appendChild(list); starsGrid.appendChild(card);
+                    });
+                }
+                renderStars();
+                function compilePlan() {
+                    const out = Object.keys(plan).length ? Object.entries(plan).map(([k, v]) => `• ${k}: ${v}`).join('\n') : "Choisis au moins une carte 💫";
+                    const box = document.getElementById('planOut'); box.style.display = 'block'; box.textContent = out;
+                }
+                window.compilePlan = compilePlan;
+
+                /* ==========================================================
+                   08. Lettre cœur — ligne par ligne au clic
+                ========================================================== */
+                const heartBtn = document.getElementById('heartBtn');
+                const letterBox = document.getElementById('letterBox');
+                const letterLines = ["Mon amour,", "Merci d'être entré dans ma vie, doucement mais sûrement.", "Je t'ai vu, j'ai ri, et quelque part mon cœur t'a choisi.", "Tu rends mes journées plus légères, même les dures.", "Tes mots, ta voix, tes petites attentions—tout compte.", "Je promets d'être là, dans le calme comme dans l'orage.", "De te tenir la main quand t'as peur, et de danser quand ça va.", "Je crois en nous, aujourd'hui, demain, et après-demain.", "Joyeux anniversaire—que tes souhaits deviennent nos souvenirs.", "Je t'aime. Fort. Pour de vrai."];
+                let iLine = 0;
+                if (heartBtn) {
+                    heartBtn.addEventListener('click', () => {
+                        S && S.clickTone && S.clickTone();
+                        try { if (letterBox) { letterBox.style.display = 'block'; if (iLine < letterLines.length) { letterBox.textContent += (letterBox.textContent ? "\n" : "") + letterLines[iLine++]; } } } catch (e) { }
+                    });
+                }
+                /* ==========================================================
+                           09. Easter eggs — triggers ➝ messages (tout éditable)
+                        ========================================================== */
+                const eggs = {
+                    "je suis triste": "Mon amour… si tu savais comme ça me fait mal de te sentir triste. J’aimerais être là, poser ma tête sur ton épaule et te dire que tout ira bien. La vie te met parfois à genoux, mais moi, je suis là, toujours. Prends ton temps, pleure si tu veux, mais n’oublie pas… même dans tes larmes, t’es la plus belle âme que je connaisse.",
+                    "je suis heureux": "Mon amour, te savoir heureux, c’est tout ce que je veux. Quand tu souris, j’ai l’impression que le monde s’apaise un peu. Ton bonheur, c’est comme un soleil qui éclaire mes journées, même de loin. Continue à rire, à briller, à vivre fort — parce que ton bonheur, c’est aussi le mien. ✨",
+                    "je suis en colère": "Respire, mon cœur. Je sais que la colère te brûle parfois, mais n’oublie pas que je suis là pour t’apaiser. Parle-moi, crie s’il le faut, je t’écouterai sans jamais te juger. Même dans tes tempêtes, je reste. Parce que t’aimer, c’est aussi t’aimer dans les jours où tu vacilles.",
+                    "je suis déçue": "Je sais… les choses ne se passent pas toujours comme tu l’espères. Mais regarde-moi, mon amour, tu n’es pas ta déception. Tu es bien plus que ça. Chaque échec est juste une étape vers quelque chose de plus grand. Et moi, je crois en toi, encore et toujours.",
+                    "tu me manques": "Tu me manques aussi, mon cœur. C’est fou comme ton absence fait du bruit dans ma tête. Mais même loin, je te sens près — dans mes pensées, dans mes rêves, dans tout ce que je fais. Ce n’est qu’un peu de temps avant que je te retrouve, et alors le monde reprendra son souffle.",
+                    "j'ai besoin de toi": "Si tu savais à quel point je veux être là pour toi. Tu peux tout me dire, tout me confier. Je veux être ton abri, ton calme après les orages. Tu n’as pas besoin d’être fort tout le temps, parce qu’à deux, on porte tout un peu plus facilement.",
+                    "j'ai besoin d'un câlin": "Ferme les yeux, mon amour… imagine mes bras autour de toi. Je te serre fort, sans mot, juste avec tendresse. Un câlin pour tout ce que t’arrives pas à dire, pour tout ce que t’as gardé en toi. Laisse-moi être ce refuge doux où tu peux enfin respirer.",
+                    "j'ai besoin d'un bisou": "Si seulement je pouvais traverser le temps et l’espace… je viendrais déposer un baiser sur tes lèvres, lentement, tendrement. Un baiser qui dit “je t’aime” sans parler. Alors garde-les pour moi, ces lèvres-là, j’arrive bientôt les chercher.💋",
+                    "je pense à nous": "Moi aussi, je pense à nous. À ce qu’on a été, à ce qu’on devient, à tout ce qu’on va encore vivre. “Nous”, c’est mon mot préféré, celui qui me rassure même dans le chaos. Tant que je t’ai, tout a encore un sens..",
+                    "le monde est dur": "Oui, le monde peut être cruel parfois… mais je suis là, toujours. T’as pas à tout supporter seul. Quand la vie te fait mal, appuie-toi sur moi. Ensemble, on affrontera tout, main dans la main. On sera notre propre douceur dans ce monde trop bruyant..",
+                    "j'ai gagné": "Mon amour, je suis si fière de toi. Chaque victoire que tu vis, c’est un peu la mienne aussi. Tu mérites tout ce qui t’arrive. Tu gagnes parce que tu donnes, parce que tu crois, parce que tu restes vrai. Bravo, mon cœur — t’es ma plus belle réussite.🏆",
+                    "j'ai perdu": "Viens là, mon amour. Perdre, ce n’est pas échouer. Même dans la défaite, tu restes fort, tu restes beau, tu restes toi. Chaque chute t’apprend, te construit. Et moi, je serai toujours là pour t’aider à te relever, encore et encore..",
+                    "je me sens bas": "Quand t’as l’impression que tout s’éteint, pense à moi. Je suis la petite lumière au fond, celle qui ne s’éteindra jamais. Laisse-moi t’aider à remonter doucement. T’as pas besoin d’être parfait, juste d’être toi. Et moi, je t’aimerai à travers tout..",
+                    "1 juillet": "Notre jour. Celui où tout a commencé. Chaque 1 juillet, je repense à nos débuts, à ce regard qui a tout changé. C’est notre anniversaire, notre petit éternel. Merci d’avoir choisi de m’aimer, encore, toujours.!",
+                    "24 novembre": "Mon jour, mais sans toi, il manquerait la moitié. Je veux juste ton regard, ta voix, ton “joyeux anniversaire” doux et sincère. T’es le plus beau cadeau que la vie m’ait offert.",
+                    "31 décembre": "L’année s’en va, mais toi, tu restes. À minuit, quand tout le monde fait des vœux, le mien reste le même : toi. Qu’importe le temps, les années, les hivers — je veux les finir et les recommencer avec toi.",
+                    "je veux savoir si tu me fais confiance": "Je ne dis pas ça à la légère. Tu as vu mes faiblesses, mes doutes, mes colères, et pourtant, tu es resté. J’ai appris que l’amour, ce n’est pas seulement de jolis mots, c’est aussi la confiance qu’on tisse jour après jour. Avec toi, je n’ai pas peur de tomber, parce que je sais que tu seras là pour me rattraper. Tu es mon refuge, ma sécurité, ma paix. ❤️",
+                    "je veux savoir combien tu me veux": "Je te veux dans chaque matin difficile et chaque nuit tranquille. Je te veux quand le monde est trop bruyant et quand tout est calme. Ce n’est pas un simple désir, c’est une certitude : je te choisis, encore et encore, dans toutes les versions de ma vie. Mon cœur te réclame sans condition. 💫.",
+                    "je veux savoir combien tu m'aimes": "Si tu pouvais ouvrir ma poitrine, tu verrais ton prénom gravé dans chaque battement. Je t’aime dans les silences et dans les rires, dans les peurs et dans les promesses. Je t’aime avec la tendresse d’un regard et la force d’un orage. Mon amour pour toi n’a pas de mesure — il est tout simplement infini. ♾️❤️.",
+                    "on emménage": "Ce n’est pas juste un toit, c’est notre nid. Là où nos chaussettes se mélangent, où les soirées s’étirent en fous rires, où la vie prend sa couleur à deux. On va créer un chez-nous, avec du désordre tendre, des habitudes ridicules, et beaucoup, beaucoup d’amour. 🏡✨.",
+                    "je n'arrive pas à dormir": "Ferme les yeux, mon amour… imagine ma voix qui te murmure tout bas : “je suis là, dors tranquille.” Je te caresserais les cheveux, je t’embrasserais le front jusqu’à ce que tu t’endormes. Rêve de nous, et je te rejoindrai là-bas.."
+                ,"on fait de notre mieux" : "L’amour parfait n’existe pas, mais l’effort sincère, oui. On trébuche, on apprend, on s’ajuste. Et surtout, on ne lâche pas. Parce que tu vaux chaque compromis, chaque pas vers l’autre. Faire de notre mieux, c’est déjà nous aimer comme il faut.",
+                    "on se fiance": "Ce n’est pas juste une bague, c’est une promesse silencieuse : celle de continuer à se choisir, même quand la vie nous secoue. C’est l’instant où nos cœurs disent “oui” avant les mots. Une déclaration d’évidence : tu es mon avenir. 💍✨",
+                    "on est heureux": "Ce bonheur-là, ce n’est pas les grands feux d’artifice. C’est la main dans la mienne, les yeux qui brillent sans raison, les silences pleins de sens. C’est toi, moi, ici, maintenant. Et c’est plus que suffisant pour être heureux. 🌞💛.",
+                    "on se marie": "Ce jour-là, le monde pourra bien s’arrêter — il n’y aura plus que toi et moi, tes yeux dans les miens, nos mains qui tremblent un peu, nos cœurs qui battent à l’unisson. Ce n’est pas un simple “oui”, c’est la promesse de te choisir chaque matin, même quand la vie sera grise, même quand les mots manqueront. C’est la certitude que nos âmes se sont trouvées, enfin. J’ai rêvé de ce moment sans savoir qu’il serait encore plus beau dans la réalité. Et quand je dirai “je te veux pour toujours”, ce ne sera pas une promesse — ce sera une évidence. ",
+                    "on voyage": "Chaque destination sera plus belle si ta main est dans la mienne. Peu importe où l’on va, du moment que tu es là, je me sentirai chez moi. On va collectionner des couchers de soleil, des anecdotes absurdes et des souvenirs gravés à jamais..",
+                    "je suis enceinte": "Un petit cœur bat sous le mien, et il est moitié toi, moitié moi. Ce miracle, c’est la preuve que notre amour crée la vie. J’ai peur, je suis émerveillée, mais surtout, je suis remplie d’un amour encore plus grand — pour toi, pour ce que nous devenons. 👶❤️",
+                    "on a un enfant": "Il ou elle portera nos traits, nos bizarreries, nos rires. On sera maladroits, parfois dépassés, mais on aimera avec une force nouvelle. Ce petit être, c’est notre plus grande aventure. Et je n’aurais voulu la vivre avec personne d’autre que toi. 🍼👨‍👩‍👧",
+                    "je suis prêt": "Ces mots, je les attendais sans les presser. Ils sonnent comme une clé, comme une porte qui s’ouvre sur un avenir qu’on bâtit à deux. Si tu es prêt, alors moi, je suis déjà là, le cœur grand ouvert. Prête à tout, tant que c’est avec toi. 💖🌌.",
+                    "je t'aime" :"Je t’aime — trois mots si simples, mais qui contiennent tout. Tout ce que je ressens quand ton nom s’affiche, quand ta voix apaise tout ce que le monde a abîmé. Je t’aime dans le calme, je t’aime dans le chaos, je t’aime sans condition. Chaque battement de mon cœur murmure ton prénom, et même le silence parle encore de toi. 💞"
+                };
+
+
+                // --- robust normalization + lookup for easter-egg triggers ---
+                function _normalizeEggKey(s) {
+                    if (!s) return "";
+                    return s.toString()
+                        .toLowerCase()
+                        .trim()
+                        .replace(/[’‘]/g, "'")          // normalize curly apostrophes
+                        .replace(/\s+/g, " ")           // collapse whitespace
+                        .replace(/[.,!?;:]/g, "")       // remove common punctuation
+                        .replace(/["“”«»]/g, "")        // remove fancy quotes
+                        .normalize('NFC');              // normalize accents
+                }
+                const _eggLookup = {};
+                Object.keys(eggs).forEach(k => { _eggLookup[_normalizeEggKey(k)] = eggs[k]; });
+                function _findEggMessage(raw) {
+                    const n = _normalizeEggKey(raw);
+                    if (!n) return null;
+                    if (_eggLookup.hasOwnProperty(n)) return _eggLookup[n];
+                    // try small transformations (leading "j'" => "je ")
+                    const alt = n.replace(/^j['’]\s*/, 'je ');
+                    if (_eggLookup.hasOwnProperty(alt)) return _eggLookup[alt];
+                    // try remove apostrophes entirely
+                    const noapost = n.replace(/['’]/g, '');
+                    if (_eggLookup.hasOwnProperty(noapost)) return _eggLookup[noapost];
+                    return null;
+                }
+
+
+                const eggInput = document.getElementById('eggInput');
+                const eggResult = document.getElementById('eggResult');
+
+                function openEgg() {
+                    const raw = (eggInput && eggInput.value) ? eggInput.value : "";
+                    const norm = _normalizeEggKey(raw);
+                    if (!norm) return;
+                    let msg = _findEggMessage(raw) || _findEggMessage(norm);
+                    if (!msg) msg = "Pardon mon amour de ne pas avoir pensé à le mettre dans l’easter egg… Si jamais tu me demandes quelque chose que j’ai oublié ou pas précisé, viens m’en parler en vrai. Et si, le jour où tu poses la question, je ne suis plus de ce monde… alors garde-la dans ton cœur, jusqu’à ce qu’on se retrouve.";
+                    if (eggResult) {
+                        eggResult.style.display = 'block';
+                        eggResult.textContent = msg;
+                    }
+                    try { S && S.clickTone && S.clickTone(); } catch (e) {/* ignore */ }
+                }
+                window.openEgg = openEgg;
+
+
+                /* ==========================================================
+                   ACCESSIBILITÉ / AIDE
+                ========================================================== */
+                window.addEventListener('keydown', e => { if (e.key === 'Escape') closePolaroid(); });
+
+                // Navigation rapide via hash (#menu, #love, …) — fonctionne aussi au refresh
+                if (location.hash) {
+                    const id = location.hash.slice(1);
+                    if (document.getElementById(id)) S.show(id);
+                }
+
+                /* ========== NAV BUTTONS JS ========== */
+                const sections = document.querySelectorAll("section");
+                let currentIndex = 0;
+
+                const nav = document.createElement("div");
+                nav.className = "nav-buttons";
+
+                const navPrevBtn = document.createElement("button");
+                navPrevBtn.textContent = "Previous";
+                const navNextBtn = document.createElement("button");
+                navNextBtn.textContent = "Next";
+
+                nav.appendChild(navPrevBtn);
+                nav.appendChild(navNextBtn);
+                document.body.appendChild(nav);
+
+                window.addEventListener("scroll", () => {
+                    if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 5) {
+                        nav.style.display = "flex";
+                    } else {
+                        nav.style.display = "none";
+                    }
+                });
+
+                function scrollToSection(index) {
+                    if (index >= 0 && index < sections.length) {
+                        currentIndex = index;
+                        sections[index].scrollIntoView({ behavior: "smooth" });
+                    }
+                }
+
+                navPrevBtn.addEventListener("click", () => {
+                    scrollToSection(currentIndex - 1);
+                });
+
+                navNextBtn.addEventListener("click", () => {
+                    scrollToSection(currentIndex + 1);
+                });
+    </script>
+
+
+
+    <!-- OVERRIDE SCRIPT: ensure back button and click reveal -->
+    <script>
+                (function () {
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const end = document.getElementById('end'); if (!end) return;
+                        const canvas = end.querySelector('canvas#canvas') || end.querySelector('canvas');
+                        const msg = end.querySelector('#message') || end.querySelector('.message');
+                        // create back button if not present
+                        let back = end.querySelector('#endBackBtn');
+                        if (!back) {
+                            back = document.createElement('button'); back.id = 'endBackBtn'; back.textContent = 'Back to menu'; document.body.appendChild(back);
+                        }
+                        back.addEventListener('click', function (e) { e.stopPropagation(); try { if (typeof S !== 'undefined') S.show('menu'); } catch (err) { } try { location.hash = '#menu'; } catch (e) { } });
+                        if (canvas) {
+                            // ensure visible size
+                            function size() { try { canvas.style.width = window.innerWidth + 'px'; canvas.style.height = window.innerHeight + 'px'; canvas.width = Math.floor(window.innerWidth * (window.devicePixelRatio || 1)); canvas.height = Math.floor(window.innerHeight * (window.devicePixelRatio || 1)); } catch (e) { } }
+                            size(); if (typeof window !== 'undefined' && window.addEventListener) window.addEventListener('resize', size, { passive: true });
+                            canvas.style.cursor = 'pointer';
+                            if (canvas) {
+                                canvas.addEventListener('click', function (e) { e.stopPropagation(); end.classList.add('revealed'); if (msg) { msg.classList.add('show'); } if (typeof window.onEndCanvasClick === 'function') try { window.onEndCanvasClick(e); } catch (err) { } });
+                            }
+                        });
+                })();
+    </script>
+
+
+
+
+
+
+
+
+
+    <!-- Bottom-centered Menu Icon -->
+    <button class="global-menu-icon" aria-label="Menu" title="Menu" id="globalMenuIcon">
+        <!-- simple home/menu icon -->
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path
+                d="M3 12.5a1 1 0 0 1 .293-.707l8-8a1 1 0 0 1 1.414 0l8 8A1 1 0 0 1 21 13v7a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-7z" />
+        </svg>
+    </button>
+
+    <script>
+            (function () {
+                function ready(fn) { if (document.readyState !== 'loading') fn(); else document.addEventListener('DOMContentLoaded', fn); }
+                ready(function () {
+                    // ensure no duplicate buttons
+                    const existing = document.querySelectorAll('.global-menu-icon');
+                    if (existing.length > 1) {
+                        // keep the last one only
+                        existing.forEach((el, i) => { if (i < existing.length - 1) el.remove(); });
+                    }
+                    const btn = document.getElementById('globalMenuIcon');
+                    const welcome = document.getElementById('welcome');
+                    function updateVisibility() {
+                        if (!btn) return;
+                        if (welcome && welcome.classList && welcome.classList.contains('active')) {
+                            btn.classList.add('hide-on-welcome');
+                        } else {
+                            btn.classList.remove('hide-on-welcome');
+                        }
+                    }
+                    updateVisibility();
+                    if (welcome) {
+                        const mo = new MutationObserver(updateVisibility);
+                        mo.observe(welcome, { attributes: true, attributeFilter: ['class'] });
+                    }
+                    btn.addEventListener('click', function (e) {
+                        e.stopPropagation();
+                        try { if (typeof S !== 'undefined' && S.show) S.show('menu'); } catch (err) { }
+                        try { location.hash = '#menu'; } catch (err) { }
+                    });
+                    // Ensure message is centered and hidden initially
+                    const end = document.getElementById('end');
+                    if (end) {
+                        const msg = end.querySelector('#message') || end.querySelector('.message');
+                        if (msg) {
+                            msg.style.opacity = 0; msg.style.visibility = 'hidden'; msg.style.pointerEvents = 'none';
+                        }
+                        const canvas = end.querySelector('canvas');
+                        if (canvas) {
+                            canvas.addEventListener('click', function () { end.classList.add('revealed'); if (msg) { msg.style.opacity = 1; msg.style.visibility = 'visible'; msg.style.pointerEvents = 'auto'; } });
+                        }
+                    }
+                });
+            })();
+    </script>
+    <style id="final-center-fix">
+        /* === FINAL OVERRIDE: Center the 'meow' message exactly over the heart === */
+        #end {
+            position: relative !important;
+            display: grid !important;
+            place-items: center !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            overflow: hidden !important;
+        }
+
+        #end #canvas {
+            grid-area: 1 / 1 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            display: block !important;
+            z-index: 1 !important;
+        }
+
+        #end #message {
+            grid-area: 1 / 1 !important;
+            position: static !important;
+            /* let grid do the centering */
+            left: auto !important;
+            top: auto !important;
+            transform: none !important;
+            /* remove conflicting transforms */
+            margin: 0 !important;
+            padding: 0 !important;
+            background: none !important;
+            border: none !important;
+            box-shadow: none !important;
+            width: auto !important;
+            max-width: 90vw !important;
+            color: #fff !important;
+            text-align: center !important;
+            font-weight: 700 !important;
+            font-size: clamp(20px, 3vw, 36px) !important;
+            line-height: 1.2 !important;
+            z-index: 3 !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+            transition: opacity .45s ease !important;
+        }
+
+        #end #message.show {
+            opacity: 1 !important;
+            visibility: visible !important;
+            pointer-events: auto !important;
+        }
+    </style>
+</body>
+
+</html>}
